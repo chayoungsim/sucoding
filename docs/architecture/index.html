@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SULOG 프론트엔드 아키텍처</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f172a;
+          --surface: #1e293b;
+          --text: #f1f5f9;
+          --muted: #94a3b8;
+          --border: #334155;
+          --accent: #60a5fa;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+        line-height: 1.6;
+      }
+      header,
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      header {
+        padding-top: 32px;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 1.75rem;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+      }
+      p,
+      li {
+        color: var(--muted);
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      nav a {
+        padding: 6px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.875rem;
+      }
+      nav a:hover,
+      nav a:focus-visible {
+        background: var(--surface);
+        outline: 2px solid var(--accent);
+      }
+      section {
+        margin: 32px 0;
+        padding: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .diagram {
+        overflow-x: auto;
+        padding: 8px 0;
+      }
+      .diagram .mermaid {
+        display: flex;
+        justify-content: center;
+        min-width: 640px;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.875rem;
+      }
+      .swatch {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+        border: 2px solid;
+        border-radius: 3px;
+        vertical-align: -2px;
+      }
+      footer {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px 48px;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SULOG 프론트엔드 아키텍처</h1>
+      <p>
+        <code>src/</code> 의 실제 import 관계를 기준으로 정리했습니다.
+        React 19 · react-router v7 · Tailwind v4
+      </p>
+      <nav aria-label="다이어그램 목차">
+        <a href="#deps">컴포넌트 의존성</a>
+        <a href="#routes">라우트 구조</a>
+        <a href="#state">상태 흐름</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- 1. 컴포넌트 의존성 (핵심) -->
+      <section id="deps" aria-labelledby="deps-title">
+        <h2 id="deps-title">1. 컴포넌트 의존성</h2>
+        <p>
+          화살표는 "import 한다"는 뜻입니다. 여러 곳에서 재사용되는
+          <code>AdBanner</code>, <code>PostGrid</code>, <code>PostCard</code> 에 주목하세요.
+        </p>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+  main["main.tsx"] --> router["routes/index.tsx"]
+  router --> Default
+
+  subgraph layouts["routes/layouts"]
+    Default["Default<br/>(Header + Outlet + Footer)"]
+  end
+
+  subgraph pages["routes/pages"]
+    Home
+    Posts
+    PostRead
+    PostCreate
+    Login
+    EmailLogin
+    Signup
+    Kakao
+    NotFound
+  end
+
+  subgraph common["components/common"]
+    Header
+    Footer
+    AuthProfile
+    AdBanner
+    FullLoading
+    ErrorState
+    Redirection
+  end
+
+  subgraph post["components/post"]
+    FeaturedPost
+    PostGrid
+    PostCard
+    PostZero
+    PostMainZero
+    PostCardLoading
+  end
+
+  subgraph comment["components/comment"]
+    CommentForm
+    CommentComponent
+  end
+
+  router --> Home
+  router --> Posts
+  router --> PostRead
+  router --> PostCreate
+  router --> Login
+  router --> EmailLogin
+  router --> Signup
+  router --> Kakao
+  router --> NotFound
+
+  Default --> Header
+  Default --> Footer
+  Header --> AuthProfile
+
+  Home --> AdBanner
+  Home --> FeaturedPost
+  Home --> PostGrid
+
+  Posts --> PostCard
+  Posts --> AdBanner
+
+  PostRead --> AdBanner
+  PostRead --> PostGrid
+  PostRead --> CommentForm
+  PostRead --> CommentComponent
+
+  PostGrid --> PostCard
+
+  classDef page fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef shared fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef unused fill:#f1f5f9,stroke:#94a3b8,color:#475569,stroke-dasharray:4 4
+  classDef layout fill:#fef3c7,stroke:#d97706,color:#0f172a
+
+  class Home,Posts,PostRead,PostCreate,Login,EmailLogin,Signup,Kakao,NotFound page
+  class AdBanner,PostGrid,PostCard shared
+  class FullLoading,ErrorState,Redirection,PostZero,PostMainZero,PostCardLoading unused
+  class Default layout
+          </pre>
+        </div>
+        <ul class="legend">
+          <li><span class="swatch" style="border-color: #2563eb; background: #dbeafe"></span>페이지</li>
+          <li><span class="swatch" style="border-color: #16a34a; background: #dcfce7"></span>여러 곳에서 재사용</li>
+          <li><span class="swatch" style="border-color: #d97706; background: #fef3c7"></span>레이아웃</li>
+          <li><span class="swatch" style="border-color: #94a3b8; background: #f1f5f9; border-style: dashed"></span>미사용 (정의만 존재)</li>
+        </ul>
+        <ul>
+          <li><code>PostCreate</code>, <code>Login</code>, <code>EmailLogin</code>, <code>Signup</code>, <code>Kakao</code>, <code>NotFound</code> 는 공통 컴포넌트 없이 독립 마크업입니다.</li>
+          <li>로딩/에러/빈 상태 컴포넌트 6개는 아직 어디에도 연결되지 않았습니다.</li>
+        </ul>
+      </section>
+
+      <!-- 2. 라우트 구조 -->
+      <section id="routes" aria-labelledby="routes-title">
+        <h2 id="routes-title">2. 라우트 구조</h2>
+        <p>모든 라우트는 <code>routes/index.tsx</code> 한 곳에서 <code>Default</code> 레이아웃의 children 으로 정의됩니다.</p>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TD
+  rp["RouterProvider<br/>createBrowserRouter"] --> layout["Default 레이아웃<br/>Header · Outlet · Footer"]
+
+  layout --> r1["/ → Home"]
+  layout --> r2["/posts → Posts"]
+  layout --> r3["/post/:id → PostRead"]
+  layout --> r4["/create-post → PostCreate"]
+  layout --> r5["/edit/:id → PostCreate"]
+  layout --> r6["/auth/login → Login"]
+  layout --> r7["/auth/email-login → EmailLogin"]
+  layout --> r8["/auth/signup → Signup"]
+  layout --> r9["/auth/callback/kakao → Kakao"]
+  layout --> r10["* → NotFound"]
+
+  r4 -. "같은 컴포넌트 공유<br/>(작성/수정)" .- r5
+          </pre>
+        </div>
+      </section>
+
+      <!-- 3. 상태 흐름 -->
+      <section id="state" aria-labelledby="state-title">
+        <h2 id="state-title">3. 상태 흐름</h2>
+        <p>
+          현재 상태는 컴포넌트 내부 <code>useState</code> 뿐이며 서로 공유되지 않습니다.
+          API, 전역 상태, 인증은 아직 없습니다.
+        </p>
+        <h3>3-1. 현재 (지역 상태)</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+  subgraph Header
+    s1(["isSearchOpen"])
+  end
+  subgraph AuthProfile
+    s2(["isUserMenuOpen"])
+  end
+  subgraph PostRead
+    s3(["showDeleteConfirm"])
+  end
+
+  e1["검색 아이콘 클릭"] -->|"setIsSearchOpen(!x)"| s1
+  s1 -->|"input 너비/투명도 className"| u1["검색창 표시"]
+
+  e2["아바타 클릭"] -->|"setIsUserMenuOpen(!x)"| s2
+  s2 -->|"조건부 렌더링"| u2["사용자 메뉴"]
+  e3["Sign out 클릭"] -->|"logout()"| c["console.log 만 실행"]
+  e3 -->|"setIsUserMenuOpen(false)"| s2
+
+  e4["삭제 버튼"] -->|"set...(true)"| s3
+  s3 -->|"조건부 렌더링"| u3["삭제 확인 모달"]
+  e5["모달 버튼"] -->|"set...(false)"| s3
+
+  classDef state fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef warn fill:#fee2e2,stroke:#dc2626,color:#0f172a
+  class s1,s2,s3 state
+  class c warn
+          </pre>
+        </div>
+        <h3>3-2. 연동 시 예상 흐름 (설치만 된 axios · zustand 기준)</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+  form["로그인/회원가입 폼<br/>(현재 onSubmit 없음)"] -->|"요청"| api["axios 인스턴스"]
+  kakao["Kakao 콜백"] -->|"인가 코드 전달"| api
+  api --> be[("Backend")]
+  be -->|"토큰/사용자"| store["zustand 인증 store"]
+  store --> header["Header / AuthProfile<br/>로그인 여부에 따라 전환"]
+  store --> guard["작성·수정·삭제·댓글<br/>권한 확인"]
+  pagesData["Posts / PostRead / Home"] -->|"목록·상세 조회"| api
+  api -->|"로딩/에러"| states["FullLoading · ErrorState<br/>PostZero · PostCardLoading"]
+
+  classDef plan stroke-dasharray:4 4
+  class api,store,be,states,guard plan
+          </pre>
+        </div>
+        <p>점선 노드는 아직 구현되지 않은 계획입니다.</p>
+      </section>
+    </main>
+
+    <footer>
+      다이어그램은 <code>docs/architecture/index.html</code> 안의 Mermaid 코드를 수정해 갱신합니다.
+    </footer>
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs";
+
+      // 시스템 다크 모드에 맞춰 테마를 고른다
+      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: isDark ? "dark" : "default",
+        flowchart: { useMaxWidth: false, htmlLabels: true },
+      });
+    </script>
+  </body>
+</html>
