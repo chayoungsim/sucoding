@@ -14,6 +14,15 @@ export default function ProfileCard({
 }: ProfileCardProps) {
   const loginMethod = user.kakaoId ? "Kakao" : "Email";
 
+  // 값이 아직 없으면 "-"를 보여주고, 스크린리더에는 값이 없다는 뜻을 따로 읽어준다
+  const renderStat = (value?: number) =>
+    value ?? (
+      <>
+        <span aria-hidden="true">-</span>
+        <span className="sr-only">Not available</span>
+      </>
+    );
+
   return (
     <section
       aria-labelledby="profileHeading"
@@ -54,12 +63,14 @@ export default function ProfileCard({
       <dl className="grid grid-cols-2 gap-4 md:gap-8 text-center">
         <div>
           <dt className="text-sm text-gray-400">Posts</dt>
-          <dd className="text-2xl font-bold text-white">{postCount ?? "-"}</dd>
+          <dd className="text-2xl font-bold text-white">
+            {renderStat(postCount)}
+          </dd>
         </div>
         <div>
           <dt className="text-sm text-gray-400">Total views</dt>
           <dd className="text-2xl font-bold text-white">
-            {totalViews ?? "-"}
+            {renderStat(totalViews)}
           </dd>
         </div>
       </dl>
