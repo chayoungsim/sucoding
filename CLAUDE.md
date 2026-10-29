@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 블로그/게시글 서비스(SuCoding 프로젝트)의 **프론트엔드 SPA**. 게시글 목록·상세·작성/수정, 댓글, 로그인(이메일/카카오)·회원가입 화면으로 구성된다.
 인증(이메일/카카오)과 게시글·댓글 CRUD가 모두 **백엔드(`VITE_API_URL`)와 연동**되어 있다 (아래 "현재 상태" 참고).
-AI 작업 규칙(파일 연동, 금지 사항 등)은 `shrimp-rules.md`, 기획 문서는 `docs/`(`PRD.md`, `ROADMAP.md`, `architecture.md`, 인증 흐름 설명 `auth.md`)를 참고한다.
+AI 작업 규칙(파일 연동, 금지 사항 등)은 `shrimp-rules.md`, 기획 문서는 `docs/`(`PRD.md`, `ROADMAP.md`, `architecture.md`)를 참고한다.
 `package.json`의 name이 `context-user_settings`인 것은 템플릿 잔재이며, `README.md`도 Vite 기본 템플릿 내용이라 참고 가치가 없다.
 
 ## 명령어
