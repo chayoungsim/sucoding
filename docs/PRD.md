@@ -17,13 +17,14 @@
 
 ## 2. 범위
 
-**포함**: 이메일 로그인/회원가입, 카카오 로그인(+이메일 등록), 로그아웃, 세션 복구, 게시글 CRUD, 댓글 작성/삭제, 목록 필터·정렬·페이지네이션, 헤더 검색(클라이언트 필터링).
+**포함**: 이메일 로그인/회원가입, 카카오 로그인(+이메일 등록), 로그아웃, 세션 복구, 게시글 CRUD, 댓글 작성/삭제, 목록 필터·정렬·페이지네이션, 헤더 검색(클라이언트 필터링), 마이페이지(프로필 표시 + 내 글 목록, 6절 참고).
 
 **제외 (Out of Scope)**
 - 서버 이미지 업로드 API/저장소 (썸네일은 프론트에서 파일을 줄여 데이터 URL로 저장 — 3절 참고)
 - 백엔드 코드 수정 (문제는 9절에 기록만)
 - 서버 검색 API (헤더 검색은 프론트에서 전체 조회 후 제목·본문을 거르는 클라이언트 필터링으로 포함 — 6절 참고)
 - 좋아요, 비밀번호 재설정, 테스트 도입
+- 마이페이지의 프로필(닉네임·이미지) 수정, 비밀번호 변경, 회원탈퇴, 내 댓글 목록 (백엔드에 해당 API가 없음)
 
 ## 3. 확정 결정
 
@@ -41,6 +42,7 @@
 - 카카오 사용자는 카카오로 로그인하고, 이메일이 없으면 이메일을 등록한다.
 - 로그인 사용자는 글을 쓰고, **본인 글만** 수정/삭제한다.
 - 로그인 사용자는 댓글을 쓰고, **본인 댓글만** 삭제한다.
+- 로그인 사용자는 마이페이지에서 내 프로필과 내가 쓴 글(글 수·총 조회수 포함)을 모아본다.
 
 ## 5. API 명세 (백엔드 코드 기준)
 
@@ -84,14 +86,15 @@
 | 이메일 로그인 | `pages/auth/EmailLogin.tsx` | 제어 폼, `POST /auth/login`, 에러 표시 |
 | 회원가입 | `pages/auth/Signup.tsx` | 비밀번호 확인 검증, `POST /auth/signup` 후 로그인 화면 이동 |
 | 카카오 | `pages/auth/Login.tsx`, `callback/Kakao.tsx` | 버튼은 `${API}/auth/kakao`로 이동. 콜백에서 `access_token`을 store에 저장하고 **즉시 URL에서 제거**. `email=N`이면 이메일 폼, `Y`면 `Redirection` |
-| 헤더 | `Header.tsx`, `AuthProfile.tsx` | 로그인 여부로 아이콘/프로필 전환, 실제 닉네임·이미지, 로그아웃 |
+| 헤더 | `Header.tsx`, `AuthProfile.tsx` | 로그인 여부로 아이콘/프로필 전환, 실제 닉네임·이미지, 마이페이지 링크, 로그아웃 |
 | 검색 | `Header.tsx`, `Posts.tsx`, `PostZero.tsx`, `utils/filterPosts.ts` | 헤더 검색 폼이 `/posts?q=`로 이동, `q`가 있으면 전체 조회 후 제목·본문(대소문자 무시)을 거르고 9개씩 나눔. 결과 건수·검색 해제·결과 없음 안내. 한계: 서버 검색 API가 없어 전체 글을 내려받음 |
 | 목록 | `Posts.tsx`, `PostCard.tsx` | PostCard를 props 기반으로, 카테고리·정렬(Latest=newest, Popular=views), 페이지네이션 |
 | 홈 | `Home.tsx`, `FeaturedPost.tsx`, `PostGrid.tsx` | `/posts/overview` 연동 |
 | 상세 | `PostRead.tsx` | 조회, 작성자에게만 수정/삭제 노출, 삭제 확인 후 `DELETE` |
 | 작성/수정 | `PostCreate.tsx` | `/create-post`=POST, `/edit/:id`=기존 값 로드 후 PUT, 썸네일 파일 선택(`utils/readImageFile.ts`) |
 | 댓글 | `CommentForm.tsx`, `CommentComponent.tsx` | 로그인 시에만 작성, 본인 댓글만 삭제 |
-| 라우트 보호 | `routes/index.tsx` | 작성/수정은 비로그인 시 `/auth/login`으로 이동 |
+| 마이페이지 | `pages/mypage/MyPage.tsx`, `components/mypage/ProfileCard.tsx`, `MyPostsZero.tsx`, `utils/filterMyPosts.ts` | `/mypage`(로그인 필요). `GET /posts`로 전체 조회 후 `post.author._id === user.id`로 거르고 최신순/조회순 정렬(`sort`)·9개씩 페이지(`page`)를 URL 쿼리로 관리. 프로필 카드에 닉네임·이메일·로그인 방식·글 수·총 조회수 표시. 한계: 서버에 작성자 필터가 없어 전체 글을 내려받음 (`author` 필터나 `GET /posts/mine`이 생기면 교체) |
+| 라우트 보호 | `routes/index.tsx` | 작성/수정/마이페이지는 비로그인 시 `/auth/login`으로 이동 |
 
 ## 7. 재사용할 기존 자산
 
