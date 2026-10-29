@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import { isCancel } from "axios";
+import { useCallback, useEffect, useState } from "react";
 
 // fetcher는 useCallback으로 감싸 안정적인 참조를 넘겨야 한다 (참조가 바뀌면 다시 조회한다)
 export function useFetch<T>(fetcher: (signal: AbortSignal) => Promise<T>) {

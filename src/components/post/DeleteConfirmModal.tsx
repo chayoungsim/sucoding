@@ -1,4 +1,4 @@
-import { useEffect, useRef, type KeyboardEvent } from "react";
+import { type KeyboardEvent, useEffect, useRef } from "react";
 
 type DeleteConfirmModalProps = {
   isDeleting: boolean;
@@ -48,8 +48,9 @@ export default function DeleteConfirmModal({
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- 자식 버튼에서 버블링된 Tab 키로 포커스를 가두는 래퍼
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onKeyDown={handleKeyDown}
     >
       <div
@@ -57,17 +58,20 @@ export default function DeleteConfirmModal({
         aria-modal="true"
         aria-labelledby="deleteDialogTitle"
         aria-describedby="deleteDialogDesc"
-        className="bg-slate-800 p-6 rounded-lg max-w-md w-full mx-4"
+        className="mx-4 w-full max-w-md rounded-lg bg-slate-800 p-6"
       >
-        <h3 id="deleteDialogTitle" className="text-xl font-bold text-white mb-4">
+        <h3
+          id="deleteDialogTitle"
+          className="mb-4 text-xl font-bold text-white"
+        >
           Delete Post
         </h3>
-        <p id="deleteDialogDesc" className="text-gray-300 mb-6">
+        <p id="deleteDialogDesc" className="mb-6 text-gray-300">
           Are you sure you want to delete this post? This action cannot be
           undone.
         </p>
         {error && (
-          <p role="alert" className="text-red-500 text-sm mb-4">
+          <p role="alert" className="mb-4 text-sm text-red-500">
             {error}
           </p>
         )}
@@ -77,7 +81,7 @@ export default function DeleteConfirmModal({
             type="button"
             onClick={onCancel}
             disabled={isDeleting}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
+            className="rounded-lg bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700 disabled:opacity-50"
           >
             Cancel
           </button>
@@ -86,7 +90,7 @@ export default function DeleteConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
+            className="rounded-lg bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600 disabled:opacity-50"
           >
             Delete
           </button>

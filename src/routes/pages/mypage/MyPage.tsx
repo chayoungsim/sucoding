@@ -1,6 +1,7 @@
+import { Clock, TrendingUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
-import { Clock, TrendingUp } from "lucide-react";
+
 import { fetchPosts } from "../../../api/posts";
 import ErrorState from "../../../components/common/ErrorState";
 import MyPostsZero from "../../../components/mypage/MyPostsZero";
@@ -48,8 +49,13 @@ export default function MyPage() {
   }, [myPosts, sort]);
 
   // 범위를 벗어난 page(?page=999 등)는 마지막 페이지로 보정한다
-  const totalPages = Math.max(1, Math.ceil((sortedPosts?.length ?? 0) / perPage));
-  const page = sortedPosts ? Math.min(requestedPage, totalPages) : requestedPage;
+  const totalPages = Math.max(
+    1,
+    Math.ceil((sortedPosts?.length ?? 0) / perPage)
+  );
+  const page = sortedPosts
+    ? Math.min(requestedPage, totalPages)
+    : requestedPage;
   const pagePosts = sortedPosts?.slice((page - 1) * perPage, page * perPage);
   const isLastPage = page >= totalPages;
 
@@ -85,7 +91,7 @@ export default function MyPage() {
   const renderList = () => {
     if (isLoading) {
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: perPage }, (_, index) => (
             <PostCardLoading key={index} />
           ))}
@@ -95,7 +101,7 @@ export default function MyPage() {
     if (error || !pagePosts) return <ErrorState onRetry={refetch} />;
     if (sortedPosts?.length === 0) return <MyPostsZero />;
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {pagePosts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
@@ -107,8 +113,8 @@ export default function MyPage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-      <h1 className="text-3xl font-bold text-white mb-8">My Page</h1>
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+      <h1 className="mb-8 text-3xl font-bold text-white">My Page</h1>
       <ProfileCard
         user={user}
         postCount={myPosts?.length}
@@ -123,39 +129,39 @@ export default function MyPage() {
         <p role="status" className="sr-only">
           {getStatusMessage()}
         </p>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <h2 id="myPostsHeading" className="text-2xl font-bold text-white">
             My Posts
           </h2>
           <div
             role="group"
             aria-label="Sort my posts"
-            className="flex bg-slate-800 rounded-lg"
+            className="flex rounded-lg bg-slate-800"
           >
             <button
               type="button"
               aria-pressed={sort === "newest"}
               onClick={() => changeSort("newest")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                 sort === "newest"
                   ? "bg-blue-500 text-white"
                   : "text-gray-300 hover:bg-slate-700"
               }`}
             >
-              <Clock className="w-4 h-4" aria-hidden="true" />
+              <Clock className="h-4 w-4" aria-hidden="true" />
               Latest
             </button>
             <button
               type="button"
               aria-pressed={sort === "views"}
               onClick={() => changeSort("views")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                 sort === "views"
                   ? "bg-blue-500 text-white"
                   : "text-gray-300 hover:bg-slate-700"
               }`}
             >
-              <TrendingUp className="w-4 h-4" aria-hidden="true" />
+              <TrendingUp className="h-4 w-4" aria-hidden="true" />
               Popular
             </button>
           </div>
@@ -167,13 +173,13 @@ export default function MyPage() {
         {sortedPosts && sortedPosts.length > perPage && (
           <nav
             aria-label="Pagination"
-            className="flex justify-center items-center mt-12 gap-2"
+            className="mt-12 flex items-center justify-center gap-2"
           >
             <button
               type="button"
               onClick={() => changePage(page - 1)}
               disabled={page <= 1}
-              className="px-4 py-2 rounded-lg bg-slate-800 text-gray-300 disabled:opacity-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="rounded-lg bg-slate-800 px-4 py-2 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
             >
               Previous
             </button>
@@ -182,7 +188,7 @@ export default function MyPage() {
               type="button"
               onClick={() => changePage(page + 1)}
               disabled={isLastPage}
-              className="px-4 py-2 rounded-lg bg-slate-800 text-gray-300 disabled:opacity-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="rounded-lg bg-slate-800 px-4 py-2 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
             >
               Next
             </button>

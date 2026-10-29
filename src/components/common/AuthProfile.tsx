@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { Link, useNavigate } from "react-router";
 import { LogOut, User } from "lucide-react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router";
+
 import { logout } from "../../api/auth";
 import { useAuthStore } from "../../stores/authStore";
 
@@ -42,6 +43,7 @@ export default function AuthProfile() {
 
   return (
     <>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- 자식 버튼에서 버블링된 Esc 키만 처리하는 래퍼 */}
       <div ref={containerRef} className="relative" onKeyDown={handleKeyDown}>
         <button
           ref={triggerRef}
@@ -57,34 +59,34 @@ export default function AuthProfile() {
               `https://gravatar.com/avatar/${user.id}?d=identicon`
             }
             alt={`${user.nickname} profile`}
-            className="w-8 h-8 rounded-full border-2 border-blue-500"
+            className="h-8 w-8 rounded-full border-2 border-blue-500"
           />
         </button>
 
         {isUserMenuOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-1 z-50">
-            <div className="px-4 py-2 border-b border-slate-700">
-              <p className="text-sm font-medium text-white break-words">
+          <div className="absolute right-0 z-50 mt-2 w-48 rounded-lg bg-slate-800 py-1 shadow-lg">
+            <div className="border-b border-slate-700 px-4 py-2">
+              <p className="text-sm font-medium break-words text-white">
                 {user.nickname}
               </p>
-              <p className="text-xs text-gray-400 break-all">
+              <p className="text-xs break-all text-gray-400">
                 {user.email ?? "No email"}
               </p>
             </div>
             <Link
               to="/mypage"
               onClick={() => setIsUserMenuOpen(false)}
-              className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
+              className="flex w-full items-center px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-slate-700 hover:text-white"
             >
-              <User className="h-4 w-4 mr-2" aria-hidden="true" />
+              <User className="mr-2 h-4 w-4" aria-hidden="true" />
               My page
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
+              className="flex w-full items-center px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-slate-700 hover:text-white"
             >
-              <LogOut className="h-4 w-4 mr-2" aria-hidden="true" />
+              <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
               Sign out
             </button>
           </div>

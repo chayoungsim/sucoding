@@ -1,4 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
+
 import { useAuthStore } from "../stores/authStore";
 
 const baseURL = import.meta.env.VITE_API_URL;
@@ -52,7 +53,12 @@ api.interceptors.response.use(
     const isSkipped = skipRefreshUrls.some((url) => config?.url === url);
 
     // 401이면 토큰을 재발급받고 원래 요청을 1회만 재시도한다
-    if (error.response?.status === 401 && config && !config._retry && !isSkipped) {
+    if (
+      error.response?.status === 401 &&
+      config &&
+      !config._retry &&
+      !isSkipped
+    ) {
       config._retry = true;
       await refreshAccessToken();
       return api(config);

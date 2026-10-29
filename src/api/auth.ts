@@ -1,6 +1,6 @@
-import { api, refreshAccessToken } from "./client";
 import { useAuthStore } from "../stores/authStore";
 import type { User } from "../types/user";
+import { api, refreshAccessToken } from "./client";
 
 export async function fetchMe(): Promise<User> {
   const { data } = await api.get<User>("/auth/me");
@@ -18,7 +18,11 @@ export async function login(email: string, password: string) {
   await fetchMe();
 }
 
-export async function signup(email: string, nickname: string, password: string) {
+export async function signup(
+  email: string,
+  nickname: string,
+  password: string
+) {
   await api.post("/auth/signup", { email, nickname, password });
 }
 

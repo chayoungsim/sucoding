@@ -14,25 +14,25 @@ export default function ErrorState({
   return (
     <div
       role="alert"
-      className="flex flex-col items-center justify-center py-16 px-4"
+      className="flex flex-col items-center justify-center px-4 py-16"
     >
-      <div className="bg-red-100 dark:bg-red-900/20 rounded-full p-6 mb-6">
+      <div className="mb-6 rounded-full bg-red-100 p-6 dark:bg-red-900/20">
         <AlertCircle
-          className="w-12 h-12 text-red-500 dark:text-red-400"
+          className="h-12 w-12 text-red-500 dark:text-red-400"
           aria-hidden="true"
         />
       </div>
-      <h2 className="text-2xl font-bold text-white mb-2 text-center">
+      <h2 className="mb-2 text-center text-2xl font-bold text-white">
         {title}
       </h2>
-      <p className="text-gray-400 text-center mb-6 max-w-md whitespace-pre-wrap">
+      <p className="mb-6 max-w-md text-center whitespace-pre-wrap text-gray-400">
         {message}
       </p>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          className="rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600"
         >
           Try again
         </button>

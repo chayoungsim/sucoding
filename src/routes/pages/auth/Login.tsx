@@ -1,5 +1,5 @@
-import { Link } from "react-router";
 import { Mail } from "lucide-react";
+import { Link } from "react-router";
 
 // 카카오 인가는 백엔드가 리다이렉트로 처리하므로 페이지를 직접 이동한다
 const startKakaoLogin = () => {
@@ -8,12 +8,12 @@ const startKakaoLogin = () => {
 
 export default function Login() {
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
+    <div className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-slate-800 rounded-lg shadow-xl p-8">
+        <div className="rounded-lg bg-slate-800 p-8 shadow-xl">
           {/* 헤더 */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white mb-2">
+          <div className="mb-8 text-center">
+            <h1 className="mb-2 text-2xl font-bold text-white">
               Welcome to SULOG
             </h1>
             <p className="text-gray-400">Sign in with your account</p>
@@ -23,9 +23,9 @@ export default function Login() {
             {/* 이메일 로그인 버튼 */}
             <Link
               to="/auth/email-login"
-              className="w-full flex items-center justify-center gap-2 bg-white text-slate-900 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-white py-3 font-medium text-slate-900 transition-colors hover:bg-gray-100"
             >
-              <Mail className="w-5 h-5" aria-hidden="true" />
+              <Mail className="h-5 w-5" aria-hidden="true" />
               Continue with Email
             </Link>
 
@@ -35,7 +35,7 @@ export default function Login() {
                 <div className="w-full border-t border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 text-gray-400 bg-slate-800">
+                <span className="bg-slate-800 px-2 text-gray-400">
                   Or continue with
                 </span>
               </div>
@@ -45,11 +45,12 @@ export default function Login() {
             <button
               type="button"
               onClick={startKakaoLogin}
-              className="w-full flex items-center justify-center gap-2 bg-[#FEE500] text-[#000000] py-3 rounded-lg hover:bg-[#FDD800] transition-colors font-medium">
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 font-medium text-[#000000] transition-colors hover:bg-[#FDD800]"
+            >
               <img
                 src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png"
                 alt="Kakao Logo"
-                className="w-5 h-5"
+                className="h-5 w-5"
               />
               Continue with Kakao
             </button>
@@ -60,7 +61,7 @@ export default function Login() {
                 <div className="w-full border-t border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 text-gray-400 bg-slate-800">
+                <span className="bg-slate-800 px-2 text-gray-400">
                   Don't have an account?
                 </span>
               </div>
@@ -69,7 +70,7 @@ export default function Login() {
             {/* 회원가입 버튼 */}
             <Link
               to="/auth/signup"
-              className="w-full flex items-center justify-center gap-2 bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-600 transition-colors font-medium"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-700 py-3 font-medium text-white transition-colors hover:bg-slate-600"
             >
               Create an account
             </Link>
