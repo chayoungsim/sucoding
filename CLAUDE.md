@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 블로그/게시글 서비스(SuCoding 프로젝트)의 **프론트엔드 SPA**. 게시글 목록·상세·작성/수정, 댓글, 로그인(이메일/카카오)·회원가입 화면으로 구성된다.
 인증(이메일/카카오)과 게시글·댓글 CRUD가 모두 **백엔드(`VITE_API_URL`)와 연동**되어 있다 (아래 "현재 상태" 참고).
-AI 작업 규칙(파일 연동, 금지 사항 등)은 `shrimp-rules.md`, 기획 문서는 `docs/`(`PRD.md`, `ROADMAP.md`, `architecture.md`)를 참고한다.
+AI 작업 규칙(파일 연동, 금지 사항 등)은 `shrimp-rules.md`, 기획 문서는 `docs/`(`PRD.md`, `ROADMAP.md`, `architecture.md`, 인증 흐름 설명 `auth.md`)를 참고한다.
 `package.json`의 name이 `context-user_settings`인 것은 템플릿 잔재이며, `README.md`도 Vite 기본 템플릿 내용이라 참고 가치가 없다.
 
 ## 명령어
@@ -45,6 +45,7 @@ src/
     common/             # Header, Footer, AuthProfile, AdBanner, 로딩/에러/리다이렉션 상태
     post/               # PostCard, PostGrid, FeaturedPost, PostForm(작성/수정), DeleteConfirmModal, 빈 상태, 로딩
     comment/            # CommentComponent, CommentForm
+    mypage/             # ProfileCard(프로필·글 수·총 조회수), MyPostsZero(내 글 빈 상태)
   api/
     client.ts           # axios 인스턴스(withCredentials), 토큰 주입·401 재발급 인터셉터, refreshAccessToken
     auth.ts             # fetchMe, login, signup, logout, restoreSession
@@ -53,7 +54,7 @@ src/
   types/                # user.ts(User), post.ts(Post, PostSummary, Comment, PostInput 등)
   constants/categories.ts  # 카테고리 목록과 Category 타입 (백엔드 시드와 동일)
   hooks/useFetch.ts     # 조회 훅 { data, error, isLoading, refetch }, AbortController로 취소
-  utils/                # getAuthErrorMessage, getPostErrorMessage(영어 에러 문구), formatDate, readImageFile(이미지 파일 → 줄인 데이터 URL), filterPosts(검색어로 글 거르기)
+  utils/                # getAuthErrorMessage, getPostErrorMessage(영어 에러 문구), formatDate, readImageFile(이미지 파일 → 줄인 데이터 URL), filterPosts(검색어로 글 거르기), filterMyPosts(작성자가 본인인 글만 남기기)
   css/                  # index.css → tailwind.css → @import "tailwindcss"
 ```
 
@@ -67,6 +68,7 @@ src/
 | `/posts` | Posts (목록) |
 | `/post/:id` | PostRead (상세 + 댓글) |
 | `/create-post`, `/edit/:id` | PostCreate (작성/수정 겸용, `RequireAuth` 하위 — 로그인 필요) |
+| `/mypage` | MyPage (프로필 + 내 글 목록, `RequireAuth` 하위 — 로그인 필요) |
 | `/auth/login`, `/auth/email-login`, `/auth/signup` | 로그인 관련 |
 | `/auth/callback/kakao` | 카카오 OAuth 콜백 |
 | `*` | NotFound |
@@ -133,5 +135,6 @@ src/
 - **페이지네이션**: 백엔드가 전체 개수를 주지 않아 "결과 수 < perPage(9)면 마지막 페이지"로 판단한다. 마지막 페이지가 정확히 9개면 다음 페이지가 빈 상태로 한 번 나온다.
 - **검색은 클라이언트 필터링**: 백엔드 `GET /posts`에 검색 파라미터가 없어서, `Header`의 검색 폼이 `/posts?q=검색어`로 이동하고 `Posts`가 `q`가 있을 때만 전체 글을 한 번 조회해 `utils/filterPosts.ts`로 제목·본문을 거른다(대소문자 무시, 부분 일치). 결과는 클라이언트에서 9개씩 나누고 건수를 표시하며, `q`가 없으면 기존 서버 페이지네이션을 쓴다. 한계: 검색할 때마다 전체 글(base64 썸네일·본문·댓글 포함)을 내려받으므로 글이 많아지면 느려진다. 백엔드에 검색 API가 생기면 서버 검색으로 교체하는 것을 권장한다.
 - **썸네일 제약**: 백엔드에 업로드 API가 없고 JSON 본문이 100KB로 제한돼, 이미지는 긴 변 800px 이하·60,000자 이하 JPEG 데이터 URL로 줄여 저장한다 (큰 사진은 화질이 낮아지고 움직이는 GIF는 미지원). 글마다 수십 KB의 base64가 `GET /posts`·`/posts/overview` 응답에 실려 무거우므로, 백엔드에 업로드 API가 생기면 `readImageFile` 대신 업로드 호출로 교체하는 것을 권장한다. 본문이 매우 길면 이미지와 합쳐 100KB를 넘어 413이 날 수 있다.
+- **마이페이지(`/mypage`)**: `MyPage`가 `GET /posts`로 전체 글을 한 번 조회해 `filterMyPosts`로 내 글만 거르고(`post.author._id === user.id`), 최신순/조회순 정렬(`sort`)과 9개씩 페이지(`page`)를 `useSearchParams`로 관리한다. `ProfileCard`에는 닉네임·이메일·로그인 방식과 글 수·총 조회수를 보여준다. 백엔드에 프로필 수정·비밀번호 변경·회원탈퇴·내 댓글 API가 없어 포함하지 않았다. 한계: 서버에 작성자 필터가 없어 전체 글(base64 썸네일 포함)을 내려받으므로, `author` 필터나 `GET /posts/mine`이 생기면 서버 조회로 교체하는 것을 권장한다. `fetchPost`는 조회수를 올리므로 목록 용도로 쓰지 않는다.
 - **알려진 한계**: 이미지 로드에 실패하면(깨진 썸네일 URL) `PostCard`/`FeaturedPost`/`PostRead`에는 대체 표시가 없다. 백엔드 이슈(조회수 증가, `/posts/seed`가 인증 없이 전체 삭제 등)는 `docs/PRD.md` 9절 참고.
 - `Kakao.tsx`는 자체 `getEmailErrorMessage`를 가지며 `getAuthErrorMessage`와 별개다. 또한 `update-email` 실패 시 `console.error`를 남긴다.
