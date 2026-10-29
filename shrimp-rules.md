@@ -9,18 +9,18 @@
 
 ## 디렉터리 구조와 배치 규칙
 
-| 경로 | 넣을 것 | 넣지 말 것 |
-|---|---|---|
-| `src/routes/index.tsx` | 라우트 정의 (유일한 위치) | 로직 |
-| `src/routes/layouts/` | 공통 레이아웃 | 페이지 |
-| `src/routes/pages/` | 라우트 단위 페이지 (`auth/`, `posts/`, `auth/callback/`) | 재사용 컴포넌트 |
-| `src/components/{common,post,comment}/` | 도메인별 재사용 컴포넌트 | 페이지, API 호출 |
-| `src/api/` | axios 호출 함수 (`client.ts`, `auth.ts`, `posts.ts`) | JSX, 컴포넌트 상태 |
-| `src/stores/` | zustand 스토어 (`authStore.ts`) | API 호출 |
-| `src/types/` | 서버 응답/도메인 타입 (`user.ts`, `post.ts`) | 컴포넌트 props 타입 |
-| `src/utils/` | 순수 함수 (`getAuthErrorMessage.ts`, `formatDate.ts`) | 상태, 부수효과 |
-| `src/constants/` | 모듈 상수 (`categories.ts`) | 함수, 상태 |
-| `src/hooks/` | 재사용 커스텀 훅 (`useFetch.ts`, named export) | JSX |
+| 경로                                    | 넣을 것                                                  | 넣지 말 것          |
+| --------------------------------------- | -------------------------------------------------------- | ------------------- |
+| `src/routes/index.tsx`                  | 라우트 정의 (유일한 위치)                                | 로직                |
+| `src/routes/layouts/`                   | 공통 레이아웃                                            | 페이지              |
+| `src/routes/pages/`                     | 라우트 단위 페이지 (`auth/`, `posts/`, `auth/callback/`) | 재사용 컴포넌트     |
+| `src/components/{common,post,comment}/` | 도메인별 재사용 컴포넌트                                 | 페이지, API 호출    |
+| `src/api/`                              | axios 호출 함수 (`client.ts`, `auth.ts`, `posts.ts`)     | JSX, 컴포넌트 상태  |
+| `src/stores/`                           | zustand 스토어 (`authStore.ts`)                          | API 호출            |
+| `src/types/`                            | 서버 응답/도메인 타입 (`user.ts`, `post.ts`)             | 컴포넌트 props 타입 |
+| `src/utils/`                            | 순수 함수 (`getAuthErrorMessage.ts`, `formatDate.ts`)    | 상태, 부수효과      |
+| `src/constants/`                        | 모듈 상수 (`categories.ts`)                              | 함수, 상태          |
+| `src/hooks/`                            | 재사용 커스텀 훅 (`useFetch.ts`, named export)           | JSX                 |
 
 - 새 도메인 API는 `src/api/{도메인}.ts`로 만든다. 예: 게시글 → `src/api/posts.ts`.
 - 새 도메인 타입은 `src/types/{도메인}.ts`로 만든다.
@@ -123,20 +123,20 @@ const res = await fetch("http://localhost:3000/auth/login");
 
 ## 파일 연동 규칙 (함께 수정할 파일)
 
-| 변경 | 함께 확인·수정 |
-|---|---|
-| 페이지 추가 | `routes/index.tsx` 등록, 필요 시 `Header.tsx` 링크 |
-| `types/user.ts`의 `User` 변경 | `stores/authStore.ts`, `api/auth.ts`, `AuthProfile.tsx`, `Kakao.tsx` |
-| 환경 변수 추가 | `.env`, `.env.example`, 사용처 |
-| 인증 API 경로 추가/변경 | `api/auth.ts`, `api/client.ts`의 `skipRefreshUrls` |
-| 에러 메시지 상태 코드 추가 | `utils/getAuthErrorMessage.ts` (`Kakao.tsx`는 자체 `getEmailErrorMessage`를 가진다) |
-| 인증 상태 필드 추가 | `stores/authStore.ts`의 타입과 `clear()` 초기화 |
-| `types/post.ts`의 `Post` 변경 | `api/posts.ts`, `PostCard`·`FeaturedPost`·`PostRead`·`PostForm`, `CommentComponent` |
-| 카테고리 추가/삭제 | `constants/categories.ts` (백엔드 시드 카테고리와 같아야 한다), `Posts.tsx`·`PostForm.tsx`는 상수를 쓰므로 수정 불필요 |
-| 게시글·댓글 에러 문구 추가 | `utils/getPostErrorMessage.ts` |
-| 썸네일 처리 규칙 변경 | `utils/readImageFile.ts`, `components/post/PostForm.tsx`, `utils/getPostErrorMessage.ts`(413) |
+| 변경                                          | 함께 확인·수정                                                                                                                                |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 페이지 추가                                   | `routes/index.tsx` 등록, 필요 시 `Header.tsx` 링크                                                                                            |
+| `types/user.ts`의 `User` 변경                 | `stores/authStore.ts`, `api/auth.ts`, `AuthProfile.tsx`, `Kakao.tsx`                                                                          |
+| 환경 변수 추가                                | `.env`, `.env.example`, 사용처                                                                                                                |
+| 인증 API 경로 추가/변경                       | `api/auth.ts`, `api/client.ts`의 `skipRefreshUrls`                                                                                            |
+| 에러 메시지 상태 코드 추가                    | `utils/getAuthErrorMessage.ts` (`Kakao.tsx`는 자체 `getEmailErrorMessage`를 가진다)                                                           |
+| 인증 상태 필드 추가                           | `stores/authStore.ts`의 타입과 `clear()` 초기화                                                                                               |
+| `types/post.ts`의 `Post` 변경                 | `api/posts.ts`, `PostCard`·`FeaturedPost`·`PostRead`·`PostForm`, `CommentComponent`                                                           |
+| 카테고리 추가/삭제                            | `constants/categories.ts` (백엔드 시드 카테고리와 같아야 한다), `Posts.tsx`·`PostForm.tsx`는 상수를 쓰므로 수정 불필요                        |
+| 게시글·댓글 에러 문구 추가                    | `utils/getPostErrorMessage.ts`                                                                                                                |
+| 썸네일 처리 규칙 변경                         | `utils/readImageFile.ts`, `components/post/PostForm.tsx`, `utils/getPostErrorMessage.ts`(413)                                                 |
 | 검색 규칙(대상 필드, `q` 쿼리 이름·길이) 변경 | `utils/filterPosts.ts`, `routes/pages/posts/Posts.tsx`, `components/common/Header.tsx`(`maxQueryLength` 포함), `components/post/PostZero.tsx` |
-| `package.json` 의존성 변경 | `CLAUDE.md`의 기술 스택 섹션 |
+| `package.json` 의존성 변경                    | `CLAUDE.md`의 기술 스택 섹션                                                                                                                  |
 
 ## 작업 방식 (AI 의사결정)
 

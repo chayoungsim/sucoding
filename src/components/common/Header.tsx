@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 import { Search, PenSquare, LogIn } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import AuthProfile from "./AuthProfile";
@@ -69,11 +75,11 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-slate-900 text-white py-5 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <header className="bg-slate-900 px-4 py-5 text-white md:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link to="/" className="flex items-center">
-          <div className="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center mr-2">
-            <span className="text-white font-bold">S</span>
+          <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500">
+            <span className="font-bold text-white">S</span>
           </div>
           <span className="text-xl font-bold">SULOG</span>
         </Link>
@@ -92,10 +98,10 @@ export default function Header() {
               autoComplete="off"
               aria-label="Search posts"
               placeholder="Search"
-              className={`bg-slate-800 text-white rounded-full py-1.5 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-[width,opacity] ${
+              className={`rounded-full bg-slate-800 px-4 py-1.5 pl-10 text-white transition-[width,opacity] focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                 isSearchOpen
-                  ? "w-40 md:w-60 opacity-100"
-                  : "w-0 opacity-0 invisible md:visible md:w-40 md:opacity-100"
+                  ? "w-40 opacity-100 md:w-60"
+                  : "invisible w-0 opacity-0 md:visible md:w-40 md:opacity-100"
               }`}
             />
             <button
@@ -105,7 +111,7 @@ export default function Header() {
               aria-label="Toggle search"
               aria-expanded={isSearchOpen}
               aria-controls="headerSearch"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
             >
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -113,7 +119,7 @@ export default function Header() {
           <Link
             to="/create-post"
             aria-label="Write a post"
-            className="p-1.5 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
+            className="rounded-full bg-blue-500 p-1.5 transition-colors hover:bg-blue-600"
           >
             <PenSquare className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -125,7 +131,7 @@ export default function Header() {
               <Link
                 to="/auth/login"
                 aria-label="Sign in"
-                className="p-1.5 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
+                className="rounded-full bg-slate-800 p-1.5 transition-colors hover:bg-slate-700"
               >
                 <LogIn className="h-4 w-4" aria-hidden="true" />
               </Link>

@@ -46,22 +46,22 @@ export default function PostZero({
   const action = renderAction();
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 bg-slate-800 rounded-lg">
-      <div className="bg-slate-700 rounded-full p-6 mb-6">
-        <FileX className="w-12 h-12 text-gray-400" aria-hidden="true" />
+    <div className="flex flex-col items-center justify-center rounded-lg bg-slate-800 px-4 py-16">
+      <div className="mb-6 rounded-full bg-slate-700 p-6">
+        <FileX className="h-12 w-12 text-gray-400" aria-hidden="true" />
       </div>
-      <h2 className="text-2xl font-bold text-white mb-2 text-center break-all">
+      <h2 className="mb-2 text-center text-2xl font-bold break-all text-white">
         {renderTitle()}
       </h2>
-      <p className="text-gray-400 text-center mb-6 max-w-md">
+      <p className="mb-6 max-w-md text-center text-gray-400">
         {renderMessage()}
       </p>
       <button
         type="button"
         onClick={action.onClick}
-        className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600"
       >
-        <RefreshCw className="w-4 h-4" aria-hidden="true" />
+        <RefreshCw className="h-4 w-4" aria-hidden="true" />
         {action.label}
       </button>
     </div>

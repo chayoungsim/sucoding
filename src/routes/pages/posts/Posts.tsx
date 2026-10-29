@@ -45,7 +45,7 @@ export default function Posts() {
     [data, isSearching, query]
   );
   const posts = isSearching
-    ? searchResults?.slice((page - 1) * perPage, page * perPage) ?? null
+    ? (searchResults?.slice((page - 1) * perPage, page * perPage) ?? null)
     : data;
 
   const updateParams = (changes: Record<string, string | null>) => {
@@ -79,7 +79,7 @@ export default function Posts() {
     if (isLoading) {
       return (
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
           aria-busy="true"
         >
           {Array.from({ length: perPage }, (_, index) => (
@@ -92,7 +92,7 @@ export default function Posts() {
     if (posts.length === 0) {
       if (page > 1) {
         return (
-          <p className="text-center text-gray-400 py-16">
+          <p className="py-16 text-center text-gray-400">
             There are no more posts.
           </p>
         );
@@ -107,7 +107,7 @@ export default function Posts() {
       );
     }
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
@@ -116,24 +116,24 @@ export default function Posts() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
       {/* Header: Title + Filter */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 md:mb-0">
+      <div className="mb-8 flex flex-col items-center justify-between md:flex-row">
+        <h1 className="mb-4 text-3xl font-bold text-gray-900 md:mb-0 dark:text-white">
           Blog Posts
         </h1>
 
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 p-2 rounded-lg focus-within:ring-2 focus-within:ring-blue-500">
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex items-center gap-2 rounded-lg bg-gray-100 p-2 focus-within:ring-2 focus-within:ring-blue-500 dark:bg-slate-800">
             <Filter
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              className="h-4 w-4 text-gray-500 dark:text-gray-400"
               aria-hidden="true"
             />
             <select
               aria-label="Category"
               value={category ?? ""}
               onChange={(event) => changeCategory(event.target.value)}
-              className="bg-transparent text-gray-700 dark:text-gray-300 focus:outline-none"
+              className="bg-transparent text-gray-700 focus:outline-none dark:text-gray-300"
             >
               <option value="">All</option>
               {categories.map((item) => (
@@ -146,32 +146,32 @@ export default function Posts() {
           <div
             role="group"
             aria-label="Sort posts"
-            className="flex bg-gray-100 dark:bg-slate-800 rounded-lg"
+            className="flex rounded-lg bg-gray-100 dark:bg-slate-800"
           >
             <button
               type="button"
               aria-pressed={sort === "newest"}
               onClick={() => changeSort("newest")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors ${
                 sort === "newest"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700"
+                  : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-700"
               }`}
             >
-              <Clock className="w-4 h-4" aria-hidden="true" />
+              <Clock className="h-4 w-4" aria-hidden="true" />
               Latest
             </button>
             <button
               type="button"
               aria-pressed={sort === "views"}
               onClick={() => changeSort("views")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors ${
                 sort === "views"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700"
+                  : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-700"
               }`}
             >
-              <TrendingUp className="w-4 h-4" aria-hidden="true" />
+              <TrendingUp className="h-4 w-4" aria-hidden="true" />
               Popular
             </button>
           </div>
@@ -180,8 +180,8 @@ export default function Posts() {
 
       {/* 검색 중이면 검색어와 결과 수를 알려준다 (검색어는 텍스트로만 출력) */}
       {isSearching && (
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <p role="status" className="text-gray-300 break-all">
+        <div className="mb-6 flex flex-wrap items-center gap-4">
+          <p role="status" className="break-all text-gray-300">
             {searchResults
               ? `Results for "${query}" (${searchResults.length})`
               : `Searching for "${query}"...`}
@@ -189,7 +189,7 @@ export default function Posts() {
           <button
             type="button"
             onClick={clearSearch}
-            className="px-4 py-1.5 text-sm bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors"
+            className="rounded-lg bg-slate-700 px-4 py-1.5 text-sm text-white transition-colors hover:bg-slate-600"
           >
             Clear search
           </button>
@@ -202,24 +202,27 @@ export default function Posts() {
       {/* Pagination */}
       <nav
         aria-label="Pagination"
-        className="flex justify-center items-center mt-12 gap-2"
+        className="mt-12 flex items-center justify-center gap-2"
       >
         <button
           type="button"
           onClick={() => changePage(page - 1)}
           disabled={page <= 1 || isLoading}
-          className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 disabled:opacity-50"
+          className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 disabled:opacity-50 dark:bg-slate-800 dark:text-gray-300"
         >
           Previous
         </button>
-        <span className="px-3 text-gray-700 dark:text-gray-300" aria-current="page">
+        <span
+          className="px-3 text-gray-700 dark:text-gray-300"
+          aria-current="page"
+        >
           Page {page}
         </span>
         <button
           type="button"
           onClick={() => changePage(page + 1)}
           disabled={isLastPage || isLoading}
-          className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 disabled:opacity-50"
+          className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 disabled:opacity-50 dark:bg-slate-800 dark:text-gray-300"
         >
           Next
         </button>

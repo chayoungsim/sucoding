@@ -26,20 +26,20 @@ export default function ProfileCard({
   return (
     <section
       aria-labelledby="profileHeading"
-      className="bg-slate-800 rounded-lg p-6 flex flex-col md:flex-row md:items-center gap-6"
+      className="flex flex-col gap-6 rounded-lg bg-slate-800 p-6 md:flex-row md:items-center"
     >
-      <div className="flex items-center gap-4 flex-1 min-w-0">
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         {user.profileImage ? (
           <img
             src={user.profileImage}
             alt={`${user.nickname} profile`}
-            className="w-20 h-20 rounded-full border-2 border-blue-500 object-cover shrink-0"
+            className="h-20 w-20 shrink-0 rounded-full border-2 border-blue-500 object-cover"
           />
         ) : (
           // 프로필 이미지가 없으면 닉네임 첫 글자로 대체 (장식용이라 스크린리더에서는 제외)
           <div
             aria-hidden="true"
-            className="w-20 h-20 rounded-full border-2 border-blue-500 bg-slate-700 text-white text-3xl font-bold flex items-center justify-center shrink-0"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border-2 border-blue-500 bg-slate-700 text-3xl font-bold text-white"
           >
             {user.nickname.charAt(0).toUpperCase()}
           </div>
@@ -47,20 +47,20 @@ export default function ProfileCard({
         <div className="min-w-0">
           <h2
             id="profileHeading"
-            className="text-xl font-bold text-white break-words"
+            className="text-xl font-bold break-words text-white"
           >
             {user.nickname}
           </h2>
-          <p className="text-sm text-gray-400 break-all">
+          <p className="text-sm break-all text-gray-400">
             {user.email ?? "No email registered"}
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="mt-1 text-xs text-gray-400">
             Signed in with {loginMethod}
           </p>
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 gap-4 md:gap-8 text-center">
+      <dl className="grid grid-cols-2 gap-4 text-center md:gap-8">
         <div>
           <dt className="text-sm text-gray-400">Posts</dt>
           <dd className="text-2xl font-bold text-white">

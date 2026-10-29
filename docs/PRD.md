@@ -10,6 +10,7 @@
 이번 작업은 프론트를 백엔드에 연동해 실제로 동작하는 블로그로 만든다.
 
 **성공 기준**
+
 - 이메일 가입/로그인, 카카오 로그인 두 경로로 로그인할 수 있다.
 - 게시글 조회·작성·수정·삭제, 댓글 작성·삭제가 백엔드와 왕복한다.
 - 새로고침해도 로그인이 유지된다.
@@ -20,6 +21,7 @@
 **포함**: 이메일 로그인/회원가입, 카카오 로그인(+이메일 등록), 로그아웃, 세션 복구, 게시글 CRUD, 댓글 작성/삭제, 목록 필터·정렬·페이지네이션, 헤더 검색(클라이언트 필터링), 마이페이지(프로필 표시 + 내 글 목록, 6절 참고).
 
 **제외 (Out of Scope)**
+
 - 서버 이미지 업로드 API/저장소 (썸네일은 프론트에서 파일을 줄여 데이터 URL로 저장 — 3절 참고)
 - 백엔드 코드 수정 (문제는 9절에 기록만)
 - 서버 검색 API (헤더 검색은 프론트에서 전체 조회 후 제목·본문을 거르는 클라이언트 필터링으로 포함 — 6절 참고)
@@ -28,12 +30,12 @@
 
 ## 3. 확정 결정
 
-| 항목 | 결정 |
-|---|---|
-| 썸네일 | **파일 선택 + 미리보기**. `FileReader`로 읽고 canvas로 축소·JPEG 압축한 데이터 URL(60,000자 이하)을 `thumbnail`에 저장. 백엔드 JSON 본문이 100KB로 제한되고 업로드 API가 없기 때문. (초기 결정은 URL 입력이었으나 변경) |
-| 토큰 보관 | access token은 **zustand 메모리**, refresh token은 httpOnly 쿠키 |
-| 세션 복구 | 앱 시작 시 `POST /auth/refresh` → `GET /auth/me` |
-| 백엔드 | 수정하지 않음 |
+| 항목      | 결정                                                                                                                                                                                                                    |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 썸네일    | **파일 선택 + 미리보기**. `FileReader`로 읽고 canvas로 축소·JPEG 압축한 데이터 URL(60,000자 이하)을 `thumbnail`에 저장. 백엔드 JSON 본문이 100KB로 제한되고 업로드 API가 없기 때문. (초기 결정은 URL 입력이었으나 변경) |
+| 토큰 보관 | access token은 **zustand 메모리**, refresh token은 httpOnly 쿠키                                                                                                                                                        |
+| 세션 복구 | 앱 시작 시 `POST /auth/refresh` → `GET /auth/me`                                                                                                                                                                        |
+| 백엔드    | 수정하지 않음                                                                                                                                                                                                           |
 
 ## 4. 사용자 스토리
 
@@ -50,51 +52,51 @@
 
 ### 인증 `/auth`
 
-| 메서드 | 경로 | 인증 | 설명 |
-|---|---|---|---|
-| GET | `/auth/kakao` | - | 카카오 인가 화면으로 리다이렉트 (브라우저 이동으로 호출) |
-| GET | `/auth/kakao/callback` | - | 백엔드가 처리 후 `FRONTEND_URL/auth/callback/kakao?access_token=..&email=Y\|N`로 리다이렉트 |
-| POST | `/auth/signup` | - | `{email, nickname, password}` → 201 / 409(이메일 중복) |
-| POST | `/auth/login` | - | `{email, password}` → `{accessToken, user}` / 401 |
-| POST | `/auth/refresh` | 쿠키 | → `{accessToken}` / 401 |
-| GET | `/auth/me` | O | → `{id, kakaoId, email, profileImage, nickname}` |
-| PATCH | `/auth/update-email` | O | `{email}` |
-| POST | `/auth/logout` | 쿠키 | → 204 |
+| 메서드 | 경로                   | 인증 | 설명                                                                                        |
+| ------ | ---------------------- | ---- | ------------------------------------------------------------------------------------------- |
+| GET    | `/auth/kakao`          | -    | 카카오 인가 화면으로 리다이렉트 (브라우저 이동으로 호출)                                    |
+| GET    | `/auth/kakao/callback` | -    | 백엔드가 처리 후 `FRONTEND_URL/auth/callback/kakao?access_token=..&email=Y\|N`로 리다이렉트 |
+| POST   | `/auth/signup`         | -    | `{email, nickname, password}` → 201 / 409(이메일 중복)                                      |
+| POST   | `/auth/login`          | -    | `{email, password}` → `{accessToken, user}` / 401                                           |
+| POST   | `/auth/refresh`        | 쿠키 | → `{accessToken}` / 401                                                                     |
+| GET    | `/auth/me`             | O    | → `{id, kakaoId, email, profileImage, nickname}`                                            |
+| PATCH  | `/auth/update-email`   | O    | `{email}`                                                                                   |
+| POST   | `/auth/logout`         | 쿠키 | → 204                                                                                       |
 
 ### 게시글 `/posts`
 
-| 메서드 | 경로 | 인증 | 설명 |
-|---|---|---|---|
-| GET | `/posts` | - | 쿼리 `sort=newest\|views`, `category`, `page`, `perPage` → 게시글 **배열** |
-| GET | `/posts/overview` | - | → `{randomPost, latestPosts(6), popularPosts(6)}` |
-| GET | `/posts/:id` | - | 단건 조회, **호출마다 viewCount +1** |
-| POST | `/posts` | O | `{title, category, thumbnail, content}` → 201 |
-| PUT | `/posts/:id` | O | 작성자만, 아니면 403 |
-| DELETE | `/posts/:id` | O | 작성자만, 아니면 403 |
-| POST | `/posts/:id/comments` | O | `{content}` → 생성된 댓글 |
-| DELETE | `/posts/:postId/comments/:commentId` | O | 댓글 작성자만 |
+| 메서드 | 경로                                 | 인증 | 설명                                                                       |
+| ------ | ------------------------------------ | ---- | -------------------------------------------------------------------------- |
+| GET    | `/posts`                             | -    | 쿼리 `sort=newest\|views`, `category`, `page`, `perPage` → 게시글 **배열** |
+| GET    | `/posts/overview`                    | -    | → `{randomPost, latestPosts(6), popularPosts(6)}`                          |
+| GET    | `/posts/:id`                         | -    | 단건 조회, **호출마다 viewCount +1**                                       |
+| POST   | `/posts`                             | O    | `{title, category, thumbnail, content}` → 201                              |
+| PUT    | `/posts/:id`                         | O    | 작성자만, 아니면 403                                                       |
+| DELETE | `/posts/:id`                         | O    | 작성자만, 아니면 403                                                       |
+| POST   | `/posts/:id/comments`                | O    | `{content}` → 생성된 댓글                                                  |
+| DELETE | `/posts/:postId/comments/:commentId` | O    | 댓글 작성자만                                                              |
 
 **Post**: `{_id, title, category, thumbnail, content, createdAt, viewCount, author:{nickname, profileImage}, comments:[{_id, author, content, createdAt}]}`.
 카테고리: Technology, Lifestyle, Travel, Business, Economy, Sports.
 
 ## 6. 기능 요구사항과 대상 파일
 
-| 기능 | 대상 파일 | 변경 요지 |
-|---|---|---|
-| 인프라 | 신규 `src/api/client.ts`, `src/stores/authStore.ts`, `.env` | axios 인스턴스(baseURL, withCredentials, 401 시 refresh 후 1회 재시도), zustand 인증 store |
-| 세션 복구 | `routes/layouts/Default.tsx` | 마운트 시 refresh → me |
-| 이메일 로그인 | `pages/auth/EmailLogin.tsx` | 제어 폼, `POST /auth/login`, 에러 표시 |
-| 회원가입 | `pages/auth/Signup.tsx` | 비밀번호 확인 검증, `POST /auth/signup` 후 로그인 화면 이동 |
-| 카카오 | `pages/auth/Login.tsx`, `callback/Kakao.tsx` | 버튼은 `${API}/auth/kakao`로 이동. 콜백에서 `access_token`을 store에 저장하고 **즉시 URL에서 제거**. `email=N`이면 이메일 폼, `Y`면 `Redirection` |
-| 헤더 | `Header.tsx`, `AuthProfile.tsx` | 로그인 여부로 아이콘/프로필 전환, 실제 닉네임·이미지, 마이페이지 링크, 로그아웃 |
-| 검색 | `Header.tsx`, `Posts.tsx`, `PostZero.tsx`, `utils/filterPosts.ts` | 헤더 검색 폼이 `/posts?q=`로 이동, `q`가 있으면 전체 조회 후 제목·본문(대소문자 무시)을 거르고 9개씩 나눔. 결과 건수·검색 해제·결과 없음 안내. 한계: 서버 검색 API가 없어 전체 글을 내려받음 |
-| 목록 | `Posts.tsx`, `PostCard.tsx` | PostCard를 props 기반으로, 카테고리·정렬(Latest=newest, Popular=views), 페이지네이션 |
-| 홈 | `Home.tsx`, `FeaturedPost.tsx`, `PostGrid.tsx` | `/posts/overview` 연동 |
-| 상세 | `PostRead.tsx` | 조회, 작성자에게만 수정/삭제 노출, 삭제 확인 후 `DELETE` |
-| 작성/수정 | `PostCreate.tsx` | `/create-post`=POST, `/edit/:id`=기존 값 로드 후 PUT, 썸네일 파일 선택(`utils/readImageFile.ts`) |
-| 댓글 | `CommentForm.tsx`, `CommentComponent.tsx` | 로그인 시에만 작성, 본인 댓글만 삭제 |
-| 마이페이지 | `pages/mypage/MyPage.tsx`, `components/mypage/ProfileCard.tsx`, `MyPostsZero.tsx`, `utils/filterMyPosts.ts` | `/mypage`(로그인 필요). `GET /posts`로 전체 조회 후 `post.author._id === user.id`로 거르고 최신순/조회순 정렬(`sort`)·9개씩 페이지(`page`)를 URL 쿼리로 관리. 프로필 카드에 닉네임·이메일·로그인 방식·글 수·총 조회수 표시. 한계: 서버에 작성자 필터가 없어 전체 글을 내려받음 (`author` 필터나 `GET /posts/mine`이 생기면 교체) |
-| 라우트 보호 | `routes/index.tsx` | 작성/수정/마이페이지는 비로그인 시 `/auth/login`으로 이동 |
+| 기능          | 대상 파일                                                                                                   | 변경 요지                                                                                                                                                                                                                                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 인프라        | 신규 `src/api/client.ts`, `src/stores/authStore.ts`, `.env`                                                 | axios 인스턴스(baseURL, withCredentials, 401 시 refresh 후 1회 재시도), zustand 인증 store                                                                                                                                                                                                                                       |
+| 세션 복구     | `routes/layouts/Default.tsx`                                                                                | 마운트 시 refresh → me                                                                                                                                                                                                                                                                                                           |
+| 이메일 로그인 | `pages/auth/EmailLogin.tsx`                                                                                 | 제어 폼, `POST /auth/login`, 에러 표시                                                                                                                                                                                                                                                                                           |
+| 회원가입      | `pages/auth/Signup.tsx`                                                                                     | 비밀번호 확인 검증, `POST /auth/signup` 후 로그인 화면 이동                                                                                                                                                                                                                                                                      |
+| 카카오        | `pages/auth/Login.tsx`, `callback/Kakao.tsx`                                                                | 버튼은 `${API}/auth/kakao`로 이동. 콜백에서 `access_token`을 store에 저장하고 **즉시 URL에서 제거**. `email=N`이면 이메일 폼, `Y`면 `Redirection`                                                                                                                                                                                |
+| 헤더          | `Header.tsx`, `AuthProfile.tsx`                                                                             | 로그인 여부로 아이콘/프로필 전환, 실제 닉네임·이미지, 마이페이지 링크, 로그아웃                                                                                                                                                                                                                                                  |
+| 검색          | `Header.tsx`, `Posts.tsx`, `PostZero.tsx`, `utils/filterPosts.ts`                                           | 헤더 검색 폼이 `/posts?q=`로 이동, `q`가 있으면 전체 조회 후 제목·본문(대소문자 무시)을 거르고 9개씩 나눔. 결과 건수·검색 해제·결과 없음 안내. 한계: 서버 검색 API가 없어 전체 글을 내려받음                                                                                                                                     |
+| 목록          | `Posts.tsx`, `PostCard.tsx`                                                                                 | PostCard를 props 기반으로, 카테고리·정렬(Latest=newest, Popular=views), 페이지네이션                                                                                                                                                                                                                                             |
+| 홈            | `Home.tsx`, `FeaturedPost.tsx`, `PostGrid.tsx`                                                              | `/posts/overview` 연동                                                                                                                                                                                                                                                                                                           |
+| 상세          | `PostRead.tsx`                                                                                              | 조회, 작성자에게만 수정/삭제 노출, 삭제 확인 후 `DELETE`                                                                                                                                                                                                                                                                         |
+| 작성/수정     | `PostCreate.tsx`                                                                                            | `/create-post`=POST, `/edit/:id`=기존 값 로드 후 PUT, 썸네일 파일 선택(`utils/readImageFile.ts`)                                                                                                                                                                                                                                 |
+| 댓글          | `CommentForm.tsx`, `CommentComponent.tsx`                                                                   | 로그인 시에만 작성, 본인 댓글만 삭제                                                                                                                                                                                                                                                                                             |
+| 마이페이지    | `pages/mypage/MyPage.tsx`, `components/mypage/ProfileCard.tsx`, `MyPostsZero.tsx`, `utils/filterMyPosts.ts` | `/mypage`(로그인 필요). `GET /posts`로 전체 조회 후 `post.author._id === user.id`로 거르고 최신순/조회순 정렬(`sort`)·9개씩 페이지(`page`)를 URL 쿼리로 관리. 프로필 카드에 닉네임·이메일·로그인 방식·글 수·총 조회수 표시. 한계: 서버에 작성자 필터가 없어 전체 글을 내려받음 (`author` 필터나 `GET /posts/mine`이 생기면 교체) |
+| 라우트 보호   | `routes/index.tsx`                                                                                          | 작성/수정/마이페이지는 비로그인 시 `/auth/login`으로 이동                                                                                                                                                                                                                                                                        |
 
 ## 7. 재사용할 기존 자산
 

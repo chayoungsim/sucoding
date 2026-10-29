@@ -17,23 +17,23 @@
 
 ## 2. 색상 토큰
 
-| 용도 | 클래스 |
-|---|---|
-| 앱 배경 | `bg-slate-900` |
-| 카드·패널·모달·댓글 박스 | `bg-slate-800` |
-| 입력 필드 (페이지 폼) | `bg-slate-800` |
-| 입력 필드 (카드 안 폼: 로그인·가입) | `bg-slate-700` |
-| 보조 버튼(Cancel 등) 배경 | `bg-slate-700` + `hover:bg-slate-600` (페이지 폼), `bg-gray-600` + `hover:bg-gray-700` (카드·모달) |
-| 주 색상 / 주 버튼 | `bg-blue-500`, hover `bg-blue-600` |
-| 링크 강조 | `text-blue-400`, hover `text-blue-300` |
-| 제목·강조 텍스트 | `text-white` |
-| 본문 텍스트 | `text-gray-300` |
-| 보조·메타 텍스트 | `text-gray-400` (더 약하게: `text-gray-500`) |
-| 아이콘(입력 안) | `text-gray-400` |
-| 위험·삭제 | `bg-red-500`, hover `bg-red-600` |
-| 에러 텍스트 | `text-red-500` |
-| 에러 박스 | `bg-red-500/10 border border-red-500/50 rounded-lg` |
-| 오버레이 | `bg-black/50` (모달), 이미지 위 그라데이션 `from-black/80 via-black/40 to-transparent` |
+| 용도                                | 클래스                                                                                             |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 앱 배경                             | `bg-slate-900`                                                                                     |
+| 카드·패널·모달·댓글 박스            | `bg-slate-800`                                                                                     |
+| 입력 필드 (페이지 폼)               | `bg-slate-800`                                                                                     |
+| 입력 필드 (카드 안 폼: 로그인·가입) | `bg-slate-700`                                                                                     |
+| 보조 버튼(Cancel 등) 배경           | `bg-slate-700` + `hover:bg-slate-600` (페이지 폼), `bg-gray-600` + `hover:bg-gray-700` (카드·모달) |
+| 주 색상 / 주 버튼                   | `bg-blue-500`, hover `bg-blue-600`                                                                 |
+| 링크 강조                           | `text-blue-400`, hover `text-blue-300`                                                             |
+| 제목·강조 텍스트                    | `text-white`                                                                                       |
+| 본문 텍스트                         | `text-gray-300`                                                                                    |
+| 보조·메타 텍스트                    | `text-gray-400` (더 약하게: `text-gray-500`)                                                       |
+| 아이콘(입력 안)                     | `text-gray-400`                                                                                    |
+| 위험·삭제                           | `bg-red-500`, hover `bg-red-600`                                                                   |
+| 에러 텍스트                         | `text-red-500`                                                                                     |
+| 에러 박스                           | `bg-red-500/10 border border-red-500/50 rounded-lg`                                                |
+| 오버레이                            | `bg-black/50` (모달), 이미지 위 그라데이션 `from-black/80 via-black/40 to-transparent`             |
 
 - 새 색상 계열(green, purple 등)을 도입하지 않는다. 성공 표시가 필요하면 먼저 합의한다.
 - 한계: `text-red-500`·`bg-blue-500` + 흰 글자는 대비가 낮은 편이다(AA 경계). 작은 글자에 쓸 때는 `text-red-400`을 검토한다.
@@ -42,35 +42,35 @@
 
 폰트는 Tailwind 기본(시스템 sans)이다. 별도 웹폰트를 추가하지 않는다.
 
-| 용도 | 클래스 |
-|---|---|
-| 페이지 제목 `h1` | `text-3xl font-bold text-white` |
-| 카드형 화면 제목(로그인) | `text-2xl font-bold text-white` |
-| 히어로 제목 | `text-2xl md:text-3xl lg:text-4xl font-bold text-white` |
-| 섹션 제목 `h2` | `text-2xl font-bold text-white` |
-| 카드 제목 | `text-lg font-bold text-white line-clamp-2` (링크 hover `text-blue-400`) |
-| 폼 라벨 | `block text-sm font-medium text-gray-300 mb-2` |
-| 본문 | `text-gray-300` (줄바꿈 보존은 `whitespace-pre-line break-words`) |
-| 메타(날짜·작성자) | `text-sm text-gray-400` 또는 `text-xs text-gray-400` |
-| 배지 | `text-xs font-semibold` |
-| 로고 | `text-xl font-bold` + 파란 원 `h-8 w-8 bg-blue-500 rounded-full` 안에 `S` |
+| 용도                     | 클래스                                                                    |
+| ------------------------ | ------------------------------------------------------------------------- |
+| 페이지 제목 `h1`         | `text-3xl font-bold text-white`                                           |
+| 카드형 화면 제목(로그인) | `text-2xl font-bold text-white`                                           |
+| 히어로 제목              | `text-2xl md:text-3xl lg:text-4xl font-bold text-white`                   |
+| 섹션 제목 `h2`           | `text-2xl font-bold text-white`                                           |
+| 카드 제목                | `text-lg font-bold text-white line-clamp-2` (링크 hover `text-blue-400`)  |
+| 폼 라벨                  | `block text-sm font-medium text-gray-300 mb-2`                            |
+| 본문                     | `text-gray-300` (줄바꿈 보존은 `whitespace-pre-line break-words`)         |
+| 메타(날짜·작성자)        | `text-sm text-gray-400` 또는 `text-xs text-gray-400`                      |
+| 배지                     | `text-xs font-semibold`                                                   |
+| 로고                     | `text-xl font-bold` + 파란 원 `h-8 w-8 bg-blue-500 rounded-full` 안에 `S` |
 
 - 제목 계층(`h1` → `h2` → `h3`)을 건너뛰지 않는다. 한 화면에 `h1`은 하나다 (모달 제목은 `h3`).
 - 게시글 본문·댓글은 **텍스트로만** 출력한다. `dangerouslySetInnerHTML` 금지.
 
 ## 4. 레이아웃·간격
 
-| 대상 | 클래스 |
-|---|---|
-| 앱 쉘 | `min-h-screen bg-slate-900 flex flex-col` → `Header` / `<main className="grow">` / `Footer` (`Default.tsx`) |
-| 페이지 컨테이너(목록·상세) | `max-w-7xl mx-auto px-4 md:px-8` (+ `py-8`) |
-| 폼 페이지 컨테이너 | `max-w-4xl mx-auto px-4 md:px-8 py-8` |
-| 카드형 중앙 화면(로그인·가입) | 바깥 `min-h-[calc(100vh-64px)] flex items-center justify-center px-4` → `w-full max-w-md` → `bg-slate-800 rounded-lg shadow-xl p-8` |
-| 중앙 안내 화면(404·Access Denied) | `max-w-7xl mx-auto px-4 md:px-8 py-20 text-center` |
-| 카드 그리드 | `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6` |
-| 섹션 | `py-10`, 섹션 머리말 `flex items-center justify-between mb-8` |
-| 폼 필드 간격 | 페이지 폼 `space-y-6`, 카드 폼 `space-y-4` |
-| 버튼 묶음 | `flex gap-4` (카드 폼은 `flex gap-3`, 각 버튼 `flex-1`) |
+| 대상                              | 클래스                                                                                                                              |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 앱 쉘                             | `min-h-screen bg-slate-900 flex flex-col` → `Header` / `<main className="grow">` / `Footer` (`Default.tsx`)                         |
+| 페이지 컨테이너(목록·상세)        | `max-w-7xl mx-auto px-4 md:px-8` (+ `py-8`)                                                                                         |
+| 폼 페이지 컨테이너                | `max-w-4xl mx-auto px-4 md:px-8 py-8`                                                                                               |
+| 카드형 중앙 화면(로그인·가입)     | 바깥 `min-h-[calc(100vh-64px)] flex items-center justify-center px-4` → `w-full max-w-md` → `bg-slate-800 rounded-lg shadow-xl p-8` |
+| 중앙 안내 화면(404·Access Denied) | `max-w-7xl mx-auto px-4 md:px-8 py-20 text-center`                                                                                  |
+| 카드 그리드                       | `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`                                                                              |
+| 섹션                              | `py-10`, 섹션 머리말 `flex items-center justify-between mb-8`                                                                       |
+| 폼 필드 간격                      | 페이지 폼 `space-y-6`, 카드 폼 `space-y-4`                                                                                          |
+| 버튼 묶음                         | `flex gap-4` (카드 폼은 `flex gap-3`, 각 버튼 `flex-1`)                                                                             |
 
 - 가로 스크롤이 생기면 안 된다. 375px에서 확인한다.
 - 간격은 Tailwind 스케일(`gap-2/3/4/6`, `mb-2/4/6/8`)만 쓴다.
@@ -79,13 +79,13 @@
 
 ### 5.1 버튼
 
-| 종류 | 클래스 |
-|---|---|
-| 주 버튼 | `px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50` |
-| 보조 버튼 | `px-6 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-600 transition-colors` |
-| 위험 버튼 | `bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50` |
-| 아이콘 원형 버튼(헤더) | `p-1.5 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors` / 보조는 `bg-slate-800 hover:bg-slate-700` |
-| 텍스트 버튼(댓글 삭제) | `flex items-center gap-1 text-sm text-gray-400 hover:text-blue-400 transition-colors` |
+| 종류                   | 클래스                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 주 버튼                | `px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50` |
+| 보조 버튼              | `px-6 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-600 transition-colors`                   |
+| 위험 버튼              | `bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50`                           |
+| 아이콘 원형 버튼(헤더) | `p-1.5 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors` / 보조는 `bg-slate-800 hover:bg-slate-700`     |
+| 텍스트 버튼(댓글 삭제) | `flex items-center gap-1 text-sm text-gray-400 hover:text-blue-400 transition-colors`                               |
 
 - 모든 버튼은 `rounded-lg`(원형은 `rounded-full`)이고 `transition-colors`를 갖는다.
 - 비동기 동작 중에는 `disabled`로 막고 `disabled:opacity-50`을 준다 (`isSubmitting`).
@@ -110,14 +110,14 @@
 
 ### 5.4 상태 화면
 
-| 상태 | 컴포넌트 |
-|---|---|
-| 전체 로딩 | `FullLoading` |
+| 상태      | 컴포넌트                                                     |
+| --------- | ------------------------------------------------------------ |
+| 전체 로딩 | `FullLoading`                                                |
 | 카드 로딩 | `PostCardLoading` × `perPage`, 컨테이너에 `aria-busy="true"` |
-| 에러 | `ErrorState` (`role="alert"`, `onRetry`로 "Try again" 버튼) |
-| 빈 목록 | `PostZero`(목록), `PostMainZero`(섹션) |
-| 404 | §4의 중앙 안내 화면 (`Post Not Found` 등) |
-| 권한 없음 | 같은 화면에 "Access Denied" + 파란 버튼 링크 |
+| 에러      | `ErrorState` (`role="alert"`, `onRetry`로 "Try again" 버튼)  |
+| 빈 목록   | `PostZero`(목록), `PostMainZero`(섹션)                       |
+| 404       | §4의 중앙 안내 화면 (`Post Not Found` 등)                    |
+| 권한 없음 | 같은 화면에 "Access Denied" + 파란 버튼 링크                 |
 
 - 새 화면도 로딩 → 에러 → 빈 상태 → 정상 순서로 분기하고, 위 컴포넌트를 재사용한다.
 - 폼 에러는 `role="alert"` + 에러 박스(§2). 필드 단위 에러는 `text-red-500 text-sm mt-2`.
@@ -148,11 +148,11 @@
 
 ## 6. 반응형
 
-| 브레이크포인트 | 사용 |
-|---|---|
-| 기본(모바일 우선) | 1열, `px-4` |
-| `md:` (768px) | 2열 그리드, `px-8`, 헤더 검색창 상시 표시, 히어로 21:9 |
-| `lg:` (1024px) | 3열 그리드, 히어로 제목 확대 |
+| 브레이크포인트    | 사용                                                   |
+| ----------------- | ------------------------------------------------------ |
+| 기본(모바일 우선) | 1열, `px-4`                                            |
+| `md:` (768px)     | 2열 그리드, `px-8`, 헤더 검색창 상시 표시, 히어로 21:9 |
+| `lg:` (1024px)    | 3열 그리드, 히어로 제목 확대                           |
 
 - 필터·헤더 같은 가로 배치는 모바일에서 `flex-col`로 쌓고 `md:flex-row`로 바꾼다.
 - 터치 대상은 충분히 크게(아이콘 버튼은 `p-1.5` 이상) 하고, 모바일 375px에서 가로 스크롤이 없어야 한다.

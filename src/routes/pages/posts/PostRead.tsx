@@ -84,8 +84,8 @@ export default function PostRead() {
 
   if (!id || currentFailure?.status === 404) {
     return (
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 text-center">
-        <h1 className="text-3xl font-bold text-white mb-4">Post Not Found</h1>
+      <div className="mx-auto max-w-7xl px-4 py-20 text-center md:px-8">
+        <h1 className="mb-4 text-3xl font-bold text-white">Post Not Found</h1>
         <p className="text-gray-400">
           The post you're looking for doesn't exist.
         </p>
@@ -138,38 +138,38 @@ export default function PostRead() {
     .slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-start mb-6">
-          <span className="inline-block bg-blue-500 text-white text-sm font-semibold px-3 py-1 rounded-md">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-6 flex items-start justify-between">
+          <span className="inline-block rounded-md bg-blue-500 px-3 py-1 text-sm font-semibold text-white">
             {post.category}
           </span>
           {isAuthor && (
             <div className="flex gap-2">
               <Link
                 to={`/edit/${post._id}`}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
               >
-                <Pencil className="w-4 h-4" aria-hidden="true" />
+                <Pencil className="h-4 w-4" aria-hidden="true" />
                 Edit
               </Link>
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                className="flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
               >
-                <Trash2 className="w-4 h-4" aria-hidden="true" />
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
                 Delete
               </button>
             </div>
           )}
         </div>
 
-        <h1 className="text-2xl lg:text-3xl font-bold text-white mb-6">
+        <h1 className="mb-6 text-2xl font-bold text-white lg:text-3xl">
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-6 mb-8">
+        <div className="mb-8 flex items-center gap-6">
           <div className="flex items-center">
             <img
               src={
@@ -177,18 +177,18 @@ export default function PostRead() {
                 `https://gravatar.com/avatar/${post.author._id}?d=identicon`
               }
               alt={post.author.nickname}
-              className="w-10 h-10 rounded-full mr-3"
+              className="mr-3 h-10 w-10 rounded-full"
             />
             <div>
-              <p className="text-white font-medium">{post.author.nickname}</p>
+              <p className="font-medium text-white">{post.author.nickname}</p>
               <div className="flex items-center text-sm text-gray-400">
-                <CalendarDays className="h-4 w-4 mr-1" aria-hidden="true" />
+                <CalendarDays className="mr-1 h-4 w-4" aria-hidden="true" />
                 <span>{formatDate(post.createdAt)}</span>
               </div>
             </div>
           </div>
           <div className="flex items-center text-sm text-gray-400">
-            <Eye className="h-4 w-4 mr-1" aria-hidden="true" />
+            <Eye className="mr-1 h-4 w-4" aria-hidden="true" />
             <span>{post.viewCount}</span>
           </div>
         </div>
@@ -197,12 +197,12 @@ export default function PostRead() {
           <img
             src={post.thumbnail}
             alt={post.title}
-            className="w-full h-[400px] object-cover rounded-lg"
+            className="h-[400px] w-full rounded-lg object-cover"
           />
         </div>
 
         {/* 본문은 일반 문자열이므로 HTML로 해석하지 않고 텍스트로만 출력한다 */}
-        <div className="max-w-none mb-12 text-white text-lg whitespace-pre-line break-words">
+        <div className="mb-12 max-w-none text-lg break-words whitespace-pre-line text-white">
           {post.content}
         </div>
 
@@ -217,8 +217,8 @@ export default function PostRead() {
         )}
 
         {/* Comments Section */}
-        <div className="border-t border-slate-700 pt-8 mt-8">
-          <h2 className="text-2xl font-bold text-white mb-8">
+        <div className="mt-8 border-t border-slate-700 pt-8">
+          <h2 className="mb-8 text-2xl font-bold text-white">
             Comments ({comments.length})
           </h2>
 
@@ -237,7 +237,7 @@ export default function PostRead() {
           )}
 
           {commentError && (
-            <p role="alert" className="text-red-500 text-sm mt-4">
+            <p role="alert" className="mt-4 text-sm text-red-500">
               {commentError}
             </p>
           )}

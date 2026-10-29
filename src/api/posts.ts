@@ -16,13 +16,18 @@ export async function fetchPosts(
   return data;
 }
 
-export async function fetchOverview(signal?: AbortSignal): Promise<PostOverview> {
+export async function fetchOverview(
+  signal?: AbortSignal
+): Promise<PostOverview> {
   const { data } = await api.get<PostOverview>("/posts/overview", { signal });
   return data;
 }
 
 // 호출마다 서버의 viewCount가 1 증가한다
-export async function fetchPost(id: string, signal?: AbortSignal): Promise<Post> {
+export async function fetchPost(
+  id: string,
+  signal?: AbortSignal
+): Promise<Post> {
   const { data } = await api.get<Post>(`/posts/${id}`, { signal });
   return data;
 }

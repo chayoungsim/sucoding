@@ -62,7 +62,9 @@ export default function PostForm({ id }: PostFormProps) {
         setFailure(null);
       })
       .catch((err) => {
-        setFailure({ status: isAxiosError(err) ? err.response?.status : undefined });
+        setFailure({
+          status: isAxiosError(err) ? err.response?.status : undefined,
+        });
       });
   }, [id, reloadKey]);
 
@@ -74,8 +76,8 @@ export default function PostForm({ id }: PostFormProps) {
   if (id) {
     if (failure?.status === 404) {
       return (
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Post Not Found</h1>
+        <div className="mx-auto max-w-7xl px-4 py-20 text-center md:px-8">
+          <h1 className="mb-4 text-3xl font-bold text-white">Post Not Found</h1>
           <p className="text-gray-400">
             The post you're looking for doesn't exist.
           </p>
@@ -88,14 +90,14 @@ export default function PostForm({ id }: PostFormProps) {
     // 작성자 본인만 수정할 수 있다
     if (!user || original.author._id !== user.id) {
       return (
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Access Denied</h1>
-          <p className="text-gray-400 mb-6">
+        <div className="mx-auto max-w-7xl px-4 py-20 text-center md:px-8">
+          <h1 className="mb-4 text-3xl font-bold text-white">Access Denied</h1>
+          <p className="mb-6 text-gray-400">
             You can only edit your own posts.
           </p>
           <Link
             to={`/post/${original._id}`}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600"
           >
             Back to post
           </Link>
@@ -165,17 +167,17 @@ export default function PostForm({ id }: PostFormProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
-      <h1 className="text-3xl font-bold text-white mb-8">
+    <div className="mx-auto max-w-4xl px-4 py-8 md:px-8">
+      <h1 className="mb-8 text-3xl font-bold text-white">
         {id ? "Edit Post" : "Write New Post"}
       </h1>
 
       {error && (
         <div
           role="alert"
-          className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded-lg"
+          className="mb-6 rounded-lg border border-red-500/50 bg-red-500/10 p-3"
         >
-          <p className="text-red-500 text-sm">{error}</p>
+          <p className="text-sm text-red-500">{error}</p>
         </div>
       )}
 
@@ -183,7 +185,7 @@ export default function PostForm({ id }: PostFormProps) {
         <div>
           <label
             htmlFor="title"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-300"
           >
             Title
           </label>
@@ -192,7 +194,7 @@ export default function PostForm({ id }: PostFormProps) {
             id="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
-            className="w-full bg-slate-800 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg bg-slate-800 px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Enter post title"
             required
           />
@@ -201,7 +203,7 @@ export default function PostForm({ id }: PostFormProps) {
         <div>
           <label
             htmlFor="category"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-300"
           >
             Category
           </label>
@@ -209,7 +211,7 @@ export default function PostForm({ id }: PostFormProps) {
             id="category"
             value={category}
             onChange={(event) => handleCategoryChange(event.target.value)}
-            className="w-full bg-slate-800 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg bg-slate-800 px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             required
           >
             {categories.map((item) => (
@@ -223,7 +225,7 @@ export default function PostForm({ id }: PostFormProps) {
         <div>
           <span
             id="thumbnailTitle"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-300"
           >
             Featured Image
           </span>
@@ -242,18 +244,18 @@ export default function PostForm({ id }: PostFormProps) {
           />
 
           {showPreview ? (
-            <div className="relative w-full aspect-video">
+            <div className="relative aspect-video w-full">
               <img
                 src={thumbnail}
                 alt="Featured image preview"
                 onError={() => setFailedImageUrl(thumbnail)}
-                className="w-full h-full object-cover rounded-lg"
+                className="h-full w-full rounded-lg object-cover"
               />
               <button
                 type="button"
                 onClick={handleRemoveImage}
                 aria-label="Remove image"
-                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
+                className="absolute top-2 right-2 rounded-full bg-red-500 p-1 text-white transition-colors hover:bg-red-600"
               >
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -261,10 +263,10 @@ export default function PostForm({ id }: PostFormProps) {
           ) : (
             <label
               htmlFor="thumbnail"
-              className="flex flex-col items-center justify-center w-full aspect-video border-2 border-dashed border-gray-600 rounded-lg text-center cursor-pointer hover:border-gray-400 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500"
+              className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-600 text-center peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 hover:border-gray-400"
             >
               <ImagePlus
-                className="h-12 w-12 text-gray-400 mb-3"
+                className="mb-3 h-12 w-12 text-gray-400"
                 aria-hidden="true"
               />
               <span className="text-gray-300">
@@ -272,19 +274,19 @@ export default function PostForm({ id }: PostFormProps) {
                   ? "Could not load this image. Click to choose another"
                   : "Click to upload image"}
               </span>
-              <span id="thumbnailHint" className="text-gray-500 text-sm mt-1">
+              <span id="thumbnailHint" className="mt-1 text-sm text-gray-500">
                 JPG, PNG, or WebP up to 10MB
               </span>
             </label>
           )}
 
           {isProcessingImage && (
-            <p role="status" className="text-gray-400 text-sm mt-2">
+            <p role="status" className="mt-2 text-sm text-gray-400">
               Processing image...
             </p>
           )}
           {imageError && (
-            <p role="alert" className="text-red-500 text-sm mt-2">
+            <p role="alert" className="mt-2 text-sm text-red-500">
               {imageError}
             </p>
           )}
@@ -293,7 +295,7 @@ export default function PostForm({ id }: PostFormProps) {
         <div>
           <label
             htmlFor="content"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-300"
           >
             Content
           </label>
@@ -301,7 +303,7 @@ export default function PostForm({ id }: PostFormProps) {
             id="content"
             value={content}
             onChange={(event) => setContent(event.target.value)}
-            className="w-full h-96 bg-slate-800 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="h-96 w-full rounded-lg bg-slate-800 px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Write your post content here..."
             required
           />
@@ -311,14 +313,14 @@ export default function PostForm({ id }: PostFormProps) {
           <button
             type="submit"
             disabled={isSubmitting || isProcessingImage}
-            className="px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50"
+            className="rounded-lg bg-blue-500 px-6 py-2.5 font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
           >
             {id ? "Save Changes" : "Publish Post"}
           </button>
           <button
             type="button"
             onClick={() => navigate(id ? `/post/${id}` : "/posts")}
-            className="px-6 py-2.5 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-600 transition-colors"
+            className="rounded-lg bg-slate-700 px-6 py-2.5 font-medium text-white transition-colors hover:bg-slate-600"
           >
             Cancel
           </button>

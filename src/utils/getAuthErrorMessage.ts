@@ -11,6 +11,7 @@ const messages: Record<number, string> = {
 
 export function getAuthErrorMessage(error: unknown): string {
   if (!isAxiosError(error)) return fallback;
-  if (!error.response) return "Cannot reach the server. Please try again later.";
+  if (!error.response)
+    return "Cannot reach the server. Please try again later.";
   return messages[error.response.status] ?? fallback;
 }

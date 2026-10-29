@@ -18,7 +18,11 @@ export async function login(email: string, password: string) {
   await fetchMe();
 }
 
-export async function signup(email: string, nickname: string, password: string) {
+export async function signup(
+  email: string,
+  nickname: string,
+  password: string
+) {
   await api.post("/auth/signup", { email, nickname, password });
 }
 

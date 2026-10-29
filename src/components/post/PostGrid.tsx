@@ -15,19 +15,19 @@ export default function PostGrid({ title, posts, href }: PostGridProps) {
 
   return (
     <section className="py-10">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">{title}</h2>
         {href && (
           <Link
             to={href}
             aria-label={`View all ${title}`}
-            className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+            className="text-sm text-blue-400 transition-colors hover:text-blue-300"
           >
             View All Post
           </Link>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}

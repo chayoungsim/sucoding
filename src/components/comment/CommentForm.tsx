@@ -42,7 +42,7 @@ export default function CommentForm({ onSubmit }: CommentFormProps) {
             `https://gravatar.com/avatar/${user?.id ?? "default"}?d=identicon`
           }
           alt=""
-          className="w-10 h-10 rounded-full"
+          className="h-10 w-10 rounded-full"
         />
         <div className="flex-1">
           <label htmlFor="comment" className="sr-only">
@@ -53,22 +53,22 @@ export default function CommentForm({ onSubmit }: CommentFormProps) {
             value={content}
             onChange={(event) => setContent(event.target.value)}
             placeholder={"Write a comment..."}
-            className="w-full bg-slate-800 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+            className="w-full resize-none rounded-lg bg-slate-800 px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             rows={3}
             required
           />
           {error && (
-            <p role="alert" className="text-red-500 text-sm mt-2">
+            <p role="alert" className="mt-2 text-sm text-red-500">
               {error}
             </p>
           )}
-          <div className="flex justify-end mt-2">
+          <div className="mt-2 flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
             >
-              <Send className="w-4 h-4" aria-hidden="true" />
+              <Send className="h-4 w-4" aria-hidden="true" />
               Comment
             </button>
           </div>

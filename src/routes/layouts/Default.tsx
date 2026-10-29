@@ -11,7 +11,7 @@ export default function Default() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-slate-900">
       <Header />
       <main className="grow">
         <Outlet />
