@@ -153,6 +153,7 @@ flowchart LR
     Posts
     PostRead
     PostCreate
+    MyPage
     Login
     EmailLogin
     Signup
@@ -184,10 +185,16 @@ flowchart LR
     CommentComponent
   end
 
+  subgraph mypage["components/mypage"]
+    ProfileCard
+    MyPostsZero
+  end
+
   router --> Home
   router --> Posts
   router --> PostRead
   router --> PostCreate
+  router --> MyPage
   router --> Login
   router --> EmailLogin
   router --> Signup
@@ -210,6 +217,10 @@ flowchart LR
   PostRead --> CommentForm
   PostRead --> CommentComponent
 
+  MyPage --> ProfileCard
+  MyPage --> MyPostsZero
+  MyPage --> PostCard
+
   PostGrid --> PostCard
 
   classDef page fill:#dbeafe,stroke:#2563eb,color:#0f172a
@@ -217,7 +228,7 @@ flowchart LR
   classDef unused fill:#f1f5f9,stroke:#94a3b8,color:#475569,stroke-dasharray:4 4
   classDef layout fill:#fef3c7,stroke:#d97706,color:#0f172a
 
-  class Home,Posts,PostRead,PostCreate,Login,EmailLogin,Signup,Kakao,NotFound page
+  class Home,Posts,PostRead,PostCreate,MyPage,Login,EmailLogin,Signup,Kakao,NotFound page
   class AdBanner,PostGrid,PostCard shared
   class FullLoading,ErrorState,Redirection,PostZero,PostMainZero,PostCardLoading unused
   class Default layout
@@ -249,6 +260,7 @@ flowchart TD
   layout --> r3["/post/:id → PostRead"]
   layout --> r4["/create-post → PostCreate"]
   layout --> r5["/edit/:id → PostCreate"]
+  layout --> r11["/mypage → MyPage"]
   layout --> r6["/auth/login → Login"]
   layout --> r7["/auth/email-login → EmailLogin"]
   layout --> r8["/auth/signup → Signup"]
