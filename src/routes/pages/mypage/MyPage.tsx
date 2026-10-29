@@ -20,7 +20,8 @@ export default function MyPage() {
   // 주소창의 쿼리를 검증해서 사용한다 (잘못된 값은 기본값으로 대체)
   const sort = searchParams.get("sort") === "views" ? "views" : "newest";
   const pageNumber = Number(searchParams.get("page"));
-  const page = Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
+  const requestedPage =
+    Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
 
   // 전체 글을 한 번 조회한 뒤 내 글만 거른다 (fetchPost는 조회수를 올리므로 쓰지 않는다)
   const fetcher = useCallback(
@@ -45,8 +46,22 @@ export default function MyPage() {
         : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }, [myPosts, sort]);
+
+  // 범위를 벗어난 page(?page=999 등)는 마지막 페이지로 보정한다
+  const totalPages = Math.max(1, Math.ceil((sortedPosts?.length ?? 0) / perPage));
+  const page = sortedPosts ? Math.min(requestedPage, totalPages) : requestedPage;
   const pagePosts = sortedPosts?.slice((page - 1) * perPage, page * perPage);
-  const isLastPage = !sortedPosts || sortedPosts.length <= page * perPage;
+  const isLastPage = page >= totalPages;
+
+  // 스크린리더에 로딩 완료·정렬·페이지 변경을 알리는 문구 (화면에는 보이지 않는다)
+  const sortLabel = sort === "views" ? "most viewed" : "latest";
+  const getStatusMessage = () => {
+    if (isLoading) return "Loading my posts";
+    if (error || !sortedPosts) return "";
+    if (sortedPosts.length === 0) return "You have no posts";
+    const count = `${sortedPosts.length} ${sortedPosts.length === 1 ? "post" : "posts"}`;
+    return `${count}, sorted by ${sortLabel}, page ${page} of ${totalPages}`;
+  };
 
   const updateParams = (changes: Record<string, string | null>) => {
     setSearchParams((prev) => {
@@ -59,19 +74,18 @@ export default function MyPage() {
     });
   };
 
-  // 정렬이 바뀌면 1페이지로 돌아간다
-  const changeSort = (value: "newest" | "views") =>
+  // 정렬이 바뀌면 1페이지로 돌아간다 (같은 정렬을 다시 누르면 무시)
+  const changeSort = (value: "newest" | "views") => {
+    if (value === sort) return;
     updateParams({ sort: value, page: null });
+  };
   const changePage = (value: number) =>
     updateParams({ page: value > 1 ? String(value) : null });
 
   const renderList = () => {
     if (isLoading) {
       return (
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          aria-busy="true"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: perPage }, (_, index) => (
             <PostCardLoading key={index} />
           ))}
@@ -80,13 +94,6 @@ export default function MyPage() {
     }
     if (error || !pagePosts) return <ErrorState onRetry={refetch} />;
     if (sortedPosts?.length === 0) return <MyPostsZero />;
-    if (pagePosts.length === 0) {
-      return (
-        <p className="text-center text-gray-400 py-16">
-          There are no more posts.
-        </p>
-      );
-    }
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pagePosts.map((post) => (
@@ -108,7 +115,14 @@ export default function MyPage() {
         totalViews={totalViews}
       />
 
-      <section aria-labelledby="myPostsHeading" className="mt-12">
+      <section
+        aria-labelledby="myPostsHeading"
+        aria-busy={isLoading}
+        className="mt-12"
+      >
+        <p role="status" className="sr-only">
+          {getStatusMessage()}
+        </p>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 id="myPostsHeading" className="text-2xl font-bold text-white">
             My Posts
@@ -163,9 +177,7 @@ export default function MyPage() {
             >
               Previous
             </button>
-            <span className="px-3 text-gray-300" aria-current="page">
-              Page {page}
-            </span>
+            <span className="px-3 text-gray-300">Page {page}</span>
             <button
               type="button"
               onClick={() => changePage(page + 1)}
