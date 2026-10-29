@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { useNavigate } from "react-router";
-import { LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { LogOut, User } from "lucide-react";
 import { logout } from "../../api/auth";
 import { useAuthStore } from "../../stores/authStore";
 
@@ -71,6 +71,14 @@ export default function AuthProfile() {
                 {user.email ?? "No email"}
               </p>
             </div>
+            <Link
+              to="/mypage"
+              onClick={() => setIsUserMenuOpen(false)}
+              className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
+            >
+              <User className="h-4 w-4 mr-2" aria-hidden="true" />
+              My page
+            </Link>
             <button
               type="button"
               onClick={handleLogout}
