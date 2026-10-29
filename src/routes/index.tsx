@@ -10,6 +10,7 @@ import NotFoundPage from "./pages/NotFound";
 import Kakao from "./pages/auth/callback/Kakao";
 import Signup from "./pages/auth/Signup";
 import EmailLogin from "./pages/auth/EmailLogin";
+import MyPage from "./pages/mypage/MyPage";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
           {
             path: "/edit/:id",
             Component: PostCreate,
+          },
+          {
+            path: "/mypage",
+            Component: MyPage,
           },
         ],
       },
