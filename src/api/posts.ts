@@ -1,4 +1,3 @@
-import { api } from "./client";
 import type {
   Comment,
   Post,
@@ -6,6 +5,7 @@ import type {
   PostListParams,
   PostOverview,
 } from "../types/post";
+import { api } from "./client";
 
 // 조회 함수의 signal은 useFetch의 요청 취소에 사용한다
 export async function fetchPosts(

@@ -1,14 +1,15 @@
+import { LogIn, PenSquare, Search } from "lucide-react";
 import {
+  type FormEvent,
+  type KeyboardEvent,
   useEffect,
   useRef,
   useState,
-  type FormEvent,
-  type KeyboardEvent,
 } from "react";
-import { Search, PenSquare, LogIn } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router";
-import AuthProfile from "./AuthProfile";
+
 import { useAuthStore } from "../../stores/authStore";
+import AuthProfile from "./AuthProfile";
 
 const maxQueryLength = 100;
 

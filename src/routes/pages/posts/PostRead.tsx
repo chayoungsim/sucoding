@@ -1,7 +1,8 @@
+import { isAxiosError } from "axios";
+import { CalendarDays, Eye, Pencil, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { isAxiosError } from "axios";
-import { CalendarDays, Trash2, Pencil, Eye } from "lucide-react";
+
 import {
   createComment,
   deleteComment,
@@ -9,13 +10,13 @@ import {
   fetchPost,
   fetchPosts,
 } from "../../../api/posts";
+import CommentComponent from "../../../components/comment/CommentComponent";
+import CommentForm from "../../../components/comment/CommentForm";
 import AdBanner from "../../../components/common/AdBanner";
 import ErrorState from "../../../components/common/ErrorState";
 import FullLoading from "../../../components/common/FullLoading";
 import DeleteConfirmModal from "../../../components/post/DeleteConfirmModal";
 import PostGrid from "../../../components/post/PostGrid";
-import CommentForm from "../../../components/comment/CommentForm";
-import CommentComponent from "../../../components/comment/CommentComponent";
 import { useFetch } from "../../../hooks/useFetch";
 import { useAuthStore } from "../../../stores/authStore";
 import type { Comment, Post } from "../../../types/post";

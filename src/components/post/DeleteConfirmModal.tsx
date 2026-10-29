@@ -1,4 +1,4 @@
-import { useEffect, useRef, type KeyboardEvent } from "react";
+import { type KeyboardEvent, useEffect, useRef } from "react";
 
 type DeleteConfirmModalProps = {
   isDeleting: boolean;
@@ -48,6 +48,7 @@ export default function DeleteConfirmModal({
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- 자식 버튼에서 버블링된 Tab 키로 포커스를 가두는 래퍼
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onKeyDown={handleKeyDown}

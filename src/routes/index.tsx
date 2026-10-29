@@ -1,16 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Home from "./pages/Home";
+
 import Default from "./layouts/Default";
-import RequireAuth from "./RequireAuth";
-import PostCreate from "./pages/posts/PostCreate";
-import Login from "./pages/auth/Login";
-import Posts from "./pages/posts/Posts";
-import PostRead from "./pages/posts/PostRead";
-import NotFoundPage from "./pages/NotFound";
 import Kakao from "./pages/auth/callback/Kakao";
-import Signup from "./pages/auth/Signup";
 import EmailLogin from "./pages/auth/EmailLogin";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import Home from "./pages/Home";
 import MyPage from "./pages/mypage/MyPage";
+import NotFoundPage from "./pages/NotFound";
+import PostCreate from "./pages/posts/PostCreate";
+import PostRead from "./pages/posts/PostRead";
+import Posts from "./pages/posts/Posts";
+import RequireAuth from "./RequireAuth";
 
 const router = createBrowserRouter([
   {

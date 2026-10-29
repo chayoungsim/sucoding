@@ -1,5 +1,6 @@
 import { CalendarDays } from "lucide-react";
 import { Link } from "react-router";
+
 import type { PostSummary } from "../../types/post";
 import { formatDate } from "../../utils/formatDate";
 

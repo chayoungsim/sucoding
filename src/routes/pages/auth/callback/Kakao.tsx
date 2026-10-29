@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router";
 import { isAxiosError } from "axios";
 import { Mail } from "lucide-react";
-import Redirection from "../../../../components/common/Redirection";
+import { type FormEvent, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router";
+
 import { api } from "../../../../api/client";
+import Redirection from "../../../../components/common/Redirection";
 import { useAuthStore } from "../../../../stores/authStore";
 import type { User } from "../../../../types/user";
 

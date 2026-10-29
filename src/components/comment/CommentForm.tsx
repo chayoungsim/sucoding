@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from "react";
 import { Send } from "lucide-react";
+import { type FormEvent, useState } from "react";
+
 import { useAuthStore } from "../../stores/authStore";
 import { getPostErrorMessage } from "../../utils/getPostErrorMessage";
 

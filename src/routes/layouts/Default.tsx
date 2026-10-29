@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router";
-import Header from "../../components/common/Header";
-import Footer from "../../components/common/Footer";
+
 import { restoreSession } from "../../api/auth";
+import Footer from "../../components/common/Footer";
+import Header from "../../components/common/Header";
 
 export default function Default() {
   // 앱 시작(새로고침 포함) 시 refresh token 쿠키로 로그인 상태를 복구한다

@@ -1,6 +1,7 @@
+import { Clock, TrendingUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
-import { Clock, TrendingUp } from "lucide-react";
+
 import { fetchPosts } from "../../../api/posts";
 import ErrorState from "../../../components/common/ErrorState";
 import MyPostsZero from "../../../components/mypage/MyPostsZero";

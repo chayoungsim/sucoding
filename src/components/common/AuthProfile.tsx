@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { Link, useNavigate } from "react-router";
 import { LogOut, User } from "lucide-react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router";
+
 import { logout } from "../../api/auth";
 import { useAuthStore } from "../../stores/authStore";
 
@@ -42,6 +43,7 @@ export default function AuthProfile() {
 
   return (
     <>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- 자식 버튼에서 버블링된 Esc 키만 처리하는 래퍼 */}
       <div ref={containerRef} className="relative" onKeyDown={handleKeyDown}>
         <button
           ref={triggerRef}

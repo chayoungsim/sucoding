@@ -1,4 +1,5 @@
 import { Trash } from "lucide-react";
+
 import type { Comment } from "../../types/post";
 import { formatDate } from "../../utils/formatDate";
 

@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from "react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+
 import { login } from "../../../api/auth";
 import { getAuthErrorMessage } from "../../../utils/getAuthErrorMessage";
 

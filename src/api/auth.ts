@@ -1,6 +1,6 @@
-import { api, refreshAccessToken } from "./client";
 import { useAuthStore } from "../stores/authStore";
 import type { User } from "../types/user";
+import { api, refreshAccessToken } from "./client";
 
 export async function fetchMe(): Promise<User> {
   const { data } = await api.get<User>("/auth/me");

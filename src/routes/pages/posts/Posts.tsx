@@ -1,6 +1,7 @@
+import { Clock, Filter, TrendingUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
-import { Clock, Filter, TrendingUp } from "lucide-react";
+
 import { fetchPosts } from "../../../api/posts";
 import AdBanner from "../../../components/common/AdBanner";
 import ErrorState from "../../../components/common/ErrorState";

@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+
 import type { PostSummary } from "../../types/post";
 import PostCard from "./PostCard";
 import PostMainZero from "./PostMainZero";

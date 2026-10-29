@@ -1,21 +1,22 @@
+import { isAxiosError } from "axios";
+import { ImagePlus, X } from "lucide-react";
 import {
+  type ChangeEvent,
+  type FormEvent,
   useEffect,
   useRef,
   useState,
-  type ChangeEvent,
-  type FormEvent,
 } from "react";
 import { Link, useNavigate } from "react-router";
-import { isAxiosError } from "axios";
-import { ImagePlus, X } from "lucide-react";
+
 import { createPost, fetchPost, updatePost } from "../../api/posts";
-import ErrorState from "../common/ErrorState";
-import FullLoading from "../common/FullLoading";
 import { categories, type Category } from "../../constants/categories";
 import { useAuthStore } from "../../stores/authStore";
 import type { Post } from "../../types/post";
 import { getPostErrorMessage } from "../../utils/getPostErrorMessage";
 import { readImageFile } from "../../utils/readImageFile";
+import ErrorState from "../common/ErrorState";
+import FullLoading from "../common/FullLoading";
 
 type PostFormProps = {
   // 있으면 수정 모드, 없으면 작성 모드
@@ -247,7 +248,7 @@ export default function PostForm({ id }: PostFormProps) {
             <div className="relative aspect-video w-full">
               <img
                 src={thumbnail}
-                alt="Featured image preview"
+                alt="Featured thumbnail preview"
                 onError={() => setFailedImageUrl(thumbnail)}
                 className="h-full w-full rounded-lg object-cover"
               />

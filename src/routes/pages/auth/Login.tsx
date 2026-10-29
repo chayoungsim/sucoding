@@ -1,5 +1,5 @@
-import { Link } from "react-router";
 import { Mail } from "lucide-react";
+import { Link } from "react-router";
 
 // 카카오 인가는 백엔드가 리다이렉트로 처리하므로 페이지를 직접 이동한다
 const startKakaoLogin = () => {
